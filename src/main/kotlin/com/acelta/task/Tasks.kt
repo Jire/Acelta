@@ -17,20 +17,20 @@ object Tasks {
 
 	inline fun delayed(ticks: Int = 1, crossinline runnable: () -> Unit) = object : TickTask(ticks) {
 		override fun run() {
-			runnable.invoke()
+			runnable()
 			stop()
 		}
 	}
 
 	inline fun repeating(ticks: Int = 1, crossinline task: () -> Boolean) = object : TickTask(ticks) {
 		override fun run() {
-			if (task.invoke())
+			if (task())
 				stop()
 		}
 	}
 
 	inline fun continuous(ticks: Int = 1, crossinline runnable: () -> Unit) = repeating(ticks) {
-		runnable.invoke(); false
+		runnable(); false
 	}
 
 }
