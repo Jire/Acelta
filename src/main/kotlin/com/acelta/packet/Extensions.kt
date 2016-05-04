@@ -6,7 +6,7 @@ import java.lang.Integer.toUnsignedLong
 import java.lang.Short.toUnsignedInt
 
 val Short.le by delegator<Short, Short> {
-	var i = toInt()
+	val i = toInt()
 	val first = i and 0xFF
 	val second = i shr 8
 	(first or second).toShort()
