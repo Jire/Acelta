@@ -7,46 +7,39 @@ import io.netty.buffer.DefaultByteBufHolder
 
 class Packeteer(data: ByteBuf) : DefaultByteBufHolder(data) {
 
-	val byte by delegator<Packeteer, Byte> { data.readByte() }
+	val byte by delegator<Packeteer, Byte> { content().readByte() }
 
-	val short by delegator<Packeteer, Short> { data.readShort() }
+	val short by delegator<Packeteer, Short> { content().readShort() }
 
-	val int by delegator<Packeteer, Int> { data.readInt() }
+	val int by delegator<Packeteer, Int> { content().readInt() }
 
-	val long by delegator<Packeteer, Long> { data.readLong() }
+	val long by delegator<Packeteer, Long> { content().readLong() }
 
-	val float by delegator<Packeteer, Float> { data.readFloat() }
+	val float by delegator<Packeteer, Float> { content().readFloat() }
 
-	val double by delegator<Packeteer, Double> { data.readDouble() }
+	val double by delegator<Packeteer, Double> { content().readDouble() }
 
-	val boolean by delegator<Packeteer, Boolean> { data.readBoolean() }
+	val boolean by delegator<Packeteer, Boolean> { content().readBoolean() }
 
 	private val chars = CharArray(256)
 
 	val string by delegator<Packeteer, String> {
 		var index = 0
 		while (data.readableBytes() > 0) {
-			val char = data.readUnsignedByte().toChar()
+			val char = content().readUnsignedByte().toChar()
 			if ('\n' == char) break
 			chars[index++] = char
 		}
 		StringCache[chars, index]
 	}
 
-	inline operator fun <reified T : Any> plus(value: T) = apply {
-		with (content()) {
-			val type = T::class.java
-			when (type) {
-				java.lang.Byte::class.java -> writeByte(value as Int)
-				java.lang.Short::class.java -> writeShort(value as Int)
-				java.lang.Integer::class.java -> writeInt(value as Int)
-				java.lang.Long::class.java -> writeLong(value as Long)
-				java.lang.Float::class.java -> writeFloat(value as Float)
-				java.lang.Double::class.java -> writeDouble(value as Double)
-				java.lang.Boolean::class.java -> writeBoolean(value as Boolean)
-				else -> throw IllegalArgumentException("Could not write the reified type \"$type\"")
-			}
-		}
-	}
+	operator fun plus(value: Byte) = apply { content().writeByte(value.toInt()) }
+	operator fun plus(value: Short) = apply { content().writeShort(value.toInt()) }
+	operator fun plus(value: Int) = apply { content().writeInt(value) }
+	operator fun plus(value: Long) = apply { content().writeLong(value) }
+	operator fun plus(value: Float) = apply { content().writeFloat(value) }
+	operator fun plus(value: Double) = apply { content().writeDouble(value) }
+	operator fun plus(value: Boolean) = apply { content().writeBoolean(value) }
+	operator fun plus(value: String) = apply { content().writeBytes(value.toByteArray()) }
 
 }
