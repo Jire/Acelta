@@ -7,6 +7,8 @@ import io.netty.buffer.DefaultByteBufHolder
 
 class Packeteer(data: ByteBuf) : DefaultByteBufHolder(data) {
 
+	val readable by delegator<Packeteer, Int> { content().readableBytes() }
+
 	val byte by delegator<Packeteer, Byte> { content().readByte() }
 
 	val short by delegator<Packeteer, Short> { content().readShort() }
@@ -21,12 +23,21 @@ class Packeteer(data: ByteBuf) : DefaultByteBufHolder(data) {
 
 	val boolean by delegator<Packeteer, Boolean> { content().readBoolean() }
 
+	val char by delegator<Packeteer, Char> { content().readChar() }
+
+	val medium by delegator<Packeteer, Int> { (short.usin shl 8) or byte.usin }
+
+	val smart by delegator<Packeteer, Int> {
+		val peek = content().getByte(content().readerIndex()).usin
+		if (peek > Byte.MAX_VALUE) short.usin + Short.MIN_VALUE else byte.usin
+	}
+
 	private val chars = CharArray(256)
 
 	val string by delegator<Packeteer, String> {
 		var index = 0
-		while (data.readableBytes() > 0) {
-			val char = content().readUnsignedByte().toChar()
+		while (readable > 0) {
+			val char = byte.usin.toChar()
 			if ('\n' == char) break
 			chars[index++] = char
 		}
@@ -41,5 +52,6 @@ class Packeteer(data: ByteBuf) : DefaultByteBufHolder(data) {
 	operator fun plus(value: Double) = apply { content().writeDouble(value) }
 	operator fun plus(value: Boolean) = apply { content().writeBoolean(value) }
 	operator fun plus(value: String) = apply { content().writeBytes(value.toByteArray()) }
+	operator fun plus(value: Char) = apply { content().writeChar(value.toInt()) }
 
 }
