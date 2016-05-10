@@ -4,7 +4,10 @@ import com.acelta.packet.PacketConductor
 import com.acelta.packet.Packeteer
 import io.netty.buffer.PooledByteBufAllocator
 import io.netty.channel.socket.SocketChannel
+import io.netty.util.AttributeKey
 import java.util.concurrent.atomic.AtomicReference
+
+val SESSION = AttributeKey.newInstance<Session>("SESSION")
 
 class Session(val channel: SocketChannel) : Packeteer(PooledByteBufAllocator.DEFAULT.buffer()) {
 
