@@ -1,10 +1,10 @@
 package com.acelta.task
 
-import java.util.*
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
 object Tasks {
 
-	private val tasks = ArrayDeque<Task>()
+	private val tasks = ObjectArrayList<Task>()
 
 	fun tick() {
 		val it = tasks.iterator()
