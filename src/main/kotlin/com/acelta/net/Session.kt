@@ -18,6 +18,9 @@ class Session(val channel: Channel) : Packeteer(PooledByteBufAllocator.DEFAULT.b
 		clear()
 	}
 
-	fun disconnect() {}
+	fun disconnect() {
+		channel.close()
+		release()
+	}
 
 }
