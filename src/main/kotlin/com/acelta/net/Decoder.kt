@@ -9,11 +9,9 @@ import io.netty.handler.codec.ByteToMessageDecoder
 
 internal class Decoder : ByteToMessageDecoder() {
 
-	override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
-		with(Packeteer(buf)) {
-			val id = byte.usin
-			PacketConductor.incoming(id, this)
-		}
+	override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) = with(Packeteer(buf)) {
+		val id = byte.usin
+		PacketConductor.incoming(id, this)
 	}
 
 }
