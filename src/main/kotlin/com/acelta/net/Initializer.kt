@@ -8,7 +8,8 @@ import io.netty.channel.socket.SocketChannel
 internal object Initializer : ChannelInitializer<SocketChannel>() {
 
 	override fun initChannel(ch: SocketChannel) {
-		ch.pipeline().addLast(Decoder(), Handler())
+		ch.pipeline().addLast("decoder", Decoder())
+		ch.pipeline().addLast("handler", Handler())
 	}
 
 }
