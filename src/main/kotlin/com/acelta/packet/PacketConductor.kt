@@ -12,3 +12,6 @@ abstract class PacketConductor(packetCapacity: Int = 256) {
 	}
 
 }
+
+object GuestPacketConductor : PacketConductor()
+object GamePacketConductor : PacketConductor()
