@@ -8,6 +8,9 @@ class Session(val channel: SocketChannel) {
 
 	val packeteer = Packeteer(PooledByteBufAllocator.DEFAULT.buffer())
 
-	fun flush() = channel.writeAndFlush(packeteer.content())
+	fun flush() {
+		channel.writeAndFlush(packeteer.content())
+		packeteer.clear()
+	}
 
 }
