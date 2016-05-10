@@ -24,8 +24,8 @@ val Byte.a by delegator<Byte, Byte> { (this + 128).toByte() }
 
 val Short.a by delegator<Short, Short> {
 	val i = toInt()
-	val first = i + 128
-	val second = i shr 8
+	val first = i shr 8
+	val second = i + 128
 	(first or second).toShort()
 }
 
@@ -45,3 +45,7 @@ val Byte.usin by delegator<Byte, Int> { toUnsignedInt(this) }
 val Short.usin by delegator<Short, Int> { toUnsignedInt(this) }
 
 val Int.usin by delegator<Int, Long> { toUnsignedLong(this) }
+
+val Int.byte by delegator<Int, Byte> { toByte() }
+
+val Int.short by delegator<Int, Short> { toShort() }
