@@ -7,6 +7,8 @@ import io.netty.buffer.DefaultByteBufHolder
 
 class Packeteer(data: ByteBuf) : DefaultByteBufHolder(data) {
 
+	fun skip(bytes: Int) = apply { content().skipBytes(bytes) }
+
 	val readable by delegator<Packeteer, Int> { content().readableBytes() }
 
 	val byte by delegator<Packeteer, Byte> { content().readByte() }
