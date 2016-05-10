@@ -1,5 +1,6 @@
-package com.acelta.packet
+package com.acelta.packet.incoming
 
+import com.acelta.packet.Packeteer
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
 abstract class PacketDispatcher<T : PacketListener> {
