@@ -5,7 +5,7 @@ import com.acelta.util.delegator
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.DefaultByteBufHolder
 
-class Packeteer(data: ByteBuf) : DefaultByteBufHolder(data) {
+open class Packeteer(data: ByteBuf) : DefaultByteBufHolder(data) {
 
 	fun skip(bytes: Int) = apply { content().skipBytes(bytes) }
 
