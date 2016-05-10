@@ -1,6 +1,5 @@
 package com.acelta.net
 
-import com.acelta.packet.GuestPacketConductor
 import com.acelta.packet.PacketConductor
 import com.acelta.packet.Packeteer
 import io.netty.buffer.PooledByteBufAllocator
@@ -9,7 +8,7 @@ import java.util.concurrent.atomic.AtomicReference
 
 class Session(val channel: SocketChannel) : Packeteer(PooledByteBufAllocator.DEFAULT.buffer()) {
 
-	val conductor: AtomicReference<PacketConductor> = AtomicReference(GuestPacketConductor)
+	val conductor: AtomicReference<PacketConductor> = AtomicReference(PacketConductor.Guest)
 
 	fun flush() {
 		channel.writeAndFlush(content())
