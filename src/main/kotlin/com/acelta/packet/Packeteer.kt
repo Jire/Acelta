@@ -56,4 +56,6 @@ class Packeteer(data: ByteBuf) : DefaultByteBufHolder(data) {
 	operator fun plus(value: String) = apply { content().writeBytes(value.toByteArray()) }
 	operator fun plus(value: Char) = apply { content().writeChar(value.toInt()) }
 
+	fun clear() = apply { content().clear() }
+
 }
