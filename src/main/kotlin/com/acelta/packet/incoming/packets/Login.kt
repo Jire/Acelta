@@ -1,8 +1,11 @@
 package com.acelta.packet.incoming.packets
 
 import com.acelta.packet.incoming.Packet
-import com.acelta.packet.incoming.listeners.LoginListener
 import com.acelta.packet.usin
+
+interface LoginListener {
+	fun on(version: Int, release: Int, highDetail: Boolean, uid: Int, username: String, password: String)
+}
 
 object Login : Packet<LoginListener>(16, {
 	val version = 0xFF - byte.usin
