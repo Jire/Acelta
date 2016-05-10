@@ -9,7 +9,7 @@ import io.netty.handler.codec.ByteToMessageDecoder
 internal class Decoder : ByteToMessageDecoder() {
 
 	override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
-		val session = ctx.attr(SESSION).get() ?: return
+		val session = ctx.attr(KEY_SESSION).get() ?: return
 		with(Packeteer(buf)) {
 			val id = byte.usin
 			session.conductor.get().incoming(id, this)

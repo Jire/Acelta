@@ -7,7 +7,7 @@ import io.netty.channel.Channel
 import io.netty.util.AttributeKey
 import java.util.concurrent.atomic.AtomicReference
 
-val SESSION = AttributeKey.newInstance<Session>("SESSION")
+val KEY_SESSION = AttributeKey.newInstance<Session>("SESSION")
 
 class Session(val channel: Channel) : Packeteer(PooledByteBufAllocator.DEFAULT.buffer()) {
 
