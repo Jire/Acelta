@@ -2,9 +2,9 @@ package com.acelta.packet
 
 import com.acelta.packet.incoming.Packet
 
-object PacketConductor {
+abstract class PacketConductor(packetCapacity: Int = 256) {
 
-	private val incoming = arrayOfNulls<Packet<*>>(256)
+	private val incoming = arrayOfNulls<Packet<*>>(packetCapacity)
 
 	fun incoming(id: Int, packeteer: Packeteer) {
 		val packet = incoming[id] ?: return
