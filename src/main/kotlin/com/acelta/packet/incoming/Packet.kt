@@ -3,7 +3,7 @@ package com.acelta.packet.incoming
 import com.acelta.packet.Packeteer
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
-abstract class Packet<T : PacketListener>(val receive: Packeteer.(Packet<T>) -> Any) {
+abstract class Packet<T : PacketListener>(val id: Int, val receive: Packeteer.(Packet<T>) -> Any) {
 
 	protected /* visible for inline */ val listeners = ObjectArrayList<T>()
 
