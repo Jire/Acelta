@@ -12,12 +12,7 @@ object Login : Packet<LoginListener>(16, {
 	val release = short.usin
 	val highDetail = boolean
 
-	for (i in 0..9) int // CRCs
-
-	byte // block length
-	byte // block ID
-
-	for (i in 0..4) int // ISAAC keys
+	skip(9 /* CRCs */ + 1 /* block length */ + 1 /* block ID */ + 4 /* ISAAC keys */)
 
 	val uid = int
 	val username = string
