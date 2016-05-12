@@ -1,6 +1,5 @@
 package com.acelta.packet.incoming
 
-import com.acelta.gameExecutor
 import com.acelta.packet.Packeteer
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
@@ -10,8 +9,9 @@ abstract class Packet<LISTENER>(val id: Int) {
 
 	fun attach(listener: LISTENER) = listeners.add(listener)
 
-	protected inline fun dispatch(crossinline body: LISTENER.() -> Any)
-			= gameExecutor.submit { listeners.forEach { body(it) } }
+	protected inline fun dispatch(body: LISTENER.() -> Any) {
+		for (i in 0..listeners.size - 1) listeners[i].body()
+	}
 
 	abstract fun Packeteer.receive()
 
