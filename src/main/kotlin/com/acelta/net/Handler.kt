@@ -10,12 +10,12 @@ internal class Handler : ChannelInboundHandlerAdapter() {
 	override fun channelRegistered(ctx: ChannelHandlerContext) {
 		// TODO create a DoS prevention service
 		session = Session(ctx.channel())
-		ctx.attr(KEY_SESSION).set(session)
+		ctx.attr(Session.KEY).set(session)
 	}
 
 	override fun channelUnregistered(ctx: ChannelHandlerContext) {
 		session?.disconnect()
-		ctx.attr(KEY_SESSION).remove()
+		ctx.attr(Session.KEY).remove()
 		session = null
 		ctx.close()
 	}
