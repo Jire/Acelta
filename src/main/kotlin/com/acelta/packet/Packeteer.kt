@@ -27,7 +27,7 @@ open class Packeteer(data: ByteBuf) : DefaultByteBufHolder(data) {
 	fun smart() = if (content().getByte(content().readerIndex()).usin() > Byte.MAX_VALUE)
 		short().usin() + Short.MIN_VALUE else byte().usin()
 
-	private val chars = CharArray(256)
+	private val chars by lazy { CharArray(256) }
 
 	fun string(): String {
 		var index = 0
