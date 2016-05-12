@@ -49,3 +49,7 @@ val Int.usin by delegator<Int, Long> { toUnsignedLong(this) }
 val Int.byte by delegator<Int, Byte> { toByte() }
 
 val Int.short by delegator<Int, Short> { toShort() }
+
+val Boolean.int by delegator<Boolean, Int> { if (this) 1 else 0 }
+
+val Boolean.byte by delegator<Boolean, Byte> { int.toByte() }
