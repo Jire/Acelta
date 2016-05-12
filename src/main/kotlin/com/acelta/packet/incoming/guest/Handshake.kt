@@ -10,7 +10,7 @@ interface HandshakeListener { fun on(session: Session, nameHash: Int) }
 object Handshake : Packet<HandshakeListener>(14) {
 
 	override fun Packeteer.receive(session: Session) {
-		val nameHash = byte.usin
+		val nameHash = byte().usin()
 
 		dispatch { on(session, nameHash) }
 	}

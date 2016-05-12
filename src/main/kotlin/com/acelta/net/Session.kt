@@ -7,7 +7,6 @@ import io.netty.channel.Channel
 import io.netty.util.AttributeKey
 import java.util.concurrent.atomic.AtomicReference
 
-
 class Session(val channel: Channel) : Packeteer(Unpooled.buffer()) {
 
 	companion object {

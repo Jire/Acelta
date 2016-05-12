@@ -1,55 +1,50 @@
 package com.acelta.packet
 
-import com.acelta.util.delegator
 import java.lang.Byte.toUnsignedInt
 import java.lang.Integer.toUnsignedLong
 import java.lang.Short.toUnsignedInt
 
-val Short.le by delegator<Short, Short> {
+fun Short.le(): Short {
 	val i = toInt()
 	val first = i and 0xFF
 	val second = i shr 8
-	(first or second).toShort()
+	return (first or second).toShort()
 }
 
-val Int.le by delegator<Int, Int> {
+fun Int.le(): Int {
 	val first = this shr 24
 	val second = this shr 16
 	val third = this shr 8
 	val fourth = this and 0xFF
-	first or second or third or fourth
+	return first or second or third or fourth
 }
 
-val Byte.a by delegator<Byte, Byte> { (this + 128).toByte() }
+fun Byte.a() = (this + 128).toByte()
 
-val Short.a by delegator<Short, Short> {
+fun Short.a(): Short {
 	val i = toInt()
 	val first = i shr 8
 	val second = i + 128
-	(first or second).toShort()
+	return (first or second).toShort()
 }
 
-val Byte.s by delegator<Byte, Byte> { (this - 128).toByte() }
+fun Byte.s() = (this - 128).toByte()
 
-val Short.s by delegator<Short, Short> {
+fun Short.s(): Short {
 	val i = toInt()
 	val first = i - 128
 	val second = i shr 8
-	(first or second).toShort()
+	return (first or second).toShort()
 }
 
-val Byte.c by delegator<Byte, Byte> { (-this).toByte() }
+fun Byte.c() = (-this).toByte()
 
-val Byte.usin by delegator<Byte, Int> { toUnsignedInt(this) }
+fun Byte.usin() = toUnsignedInt(this)
 
-val Short.usin by delegator<Short, Int> { toUnsignedInt(this) }
+fun Short.usin() = toUnsignedInt(this)
 
-val Int.usin by delegator<Int, Long> { toUnsignedLong(this) }
+fun Int.usin() = toUnsignedLong(this)
 
-val Int.byte by delegator<Int, Byte> { toByte() }
+fun Boolean.toInt() = if (this) 1 else 0
 
-val Int.short by delegator<Int, Short> { toShort() }
-
-val Boolean.int by delegator<Boolean, Int> { if (this) 1 else 0 }
-
-val Boolean.byte by delegator<Boolean, Byte> { int.toByte() }
+fun Boolean.toByte() = toInt().toByte()

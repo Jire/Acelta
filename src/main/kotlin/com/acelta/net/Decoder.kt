@@ -11,7 +11,7 @@ internal class Decoder : ByteToMessageDecoder() {
 	override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
 		val session = ctx.attr(Session.KEY).get() ?: return
 		with(Packeteer(buf)) {
-			val id = byte.usin
+			val id = byte().usin()
 			session.conductor.get().incoming(id, session, this)
 		}
 	}

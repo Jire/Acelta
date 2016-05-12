@@ -13,15 +13,15 @@ interface LoginListener {
 object Login : Packet<LoginListener>(16) {
 
 	override fun Packeteer.receive(session: Session) {
-		val version = 0xFF - byte.usin
-		val release = short.usin
-		val highDetail = boolean
+		val version = 0xFF - byte().usin()
+		val release = short().usin()
+		val highDetail = boolean()
 
 		skip(9 /* CRCs */ + 1 /* block length */ + 1 /* block ID */ + 4 /* ISAAC keys */)
 
-		val uid = int
-		val username = string
-		val password = string
+		val uid = int()
+		val username = string()
+		val password = string()
 
 		dispatch { on(session, version, release, highDetail, uid, username, password) }
 	}

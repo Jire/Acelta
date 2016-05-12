@@ -1,7 +1,6 @@
 package com.acelta.packet
 
 import com.acelta.util.StringCache
-import com.acelta.util.delegator
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.DefaultByteBufHolder
 
@@ -9,41 +8,35 @@ open class Packeteer(data: ByteBuf) : DefaultByteBufHolder(data) {
 
 	fun skip(bytes: Int) = apply { content().skipBytes(bytes) }
 
-	val readable by delegator<Packeteer, Int> { content().readableBytes() }
+	fun readable() = content().readableBytes()
 
-	val byte by delegator<Packeteer, Byte> { content().readByte() }
+	fun byte() = content().readByte()
 
-	val short by delegator<Packeteer, Short> { content().readShort() }
+	fun short() = content().readShort()
 
-	val int by delegator<Packeteer, Int> { content().readInt() }
+	fun int() = content().readInt()
 
-	val long by delegator<Packeteer, Long> { content().readLong() }
+	fun long() = content().readLong()
 
-	val float by delegator<Packeteer, Float> { content().readFloat() }
+	fun boolean() = content().readBoolean()
 
-	val double by delegator<Packeteer, Double> { content().readDouble() }
+	fun char() = content().readChar()
 
-	val boolean by delegator<Packeteer, Boolean> { content().readBoolean() }
+	fun medium() = (short().usin() shl 8) or byte().usin()
 
-	val char by delegator<Packeteer, Char> { content().readChar() }
-
-	val medium by delegator<Packeteer, Int> { (short.usin shl 8) or byte.usin }
-
-	val smart by delegator<Packeteer, Int> {
-		val peek = content().getByte(content().readerIndex()).usin
-		if (peek > Byte.MAX_VALUE) short.usin + Short.MIN_VALUE else byte.usin
-	}
+	fun smart() = if (content().getByte(content().readerIndex()).usin() > Byte.MAX_VALUE)
+		short().usin() + Short.MIN_VALUE else byte().usin()
 
 	private val chars = CharArray(256)
 
-	val string by delegator<Packeteer, String> {
+	fun string(): String {
 		var index = 0
-		while (readable > 0) {
-			val char = byte.usin.toChar()
+		while (readable() > 0) {
+			val char = byte().usin().toChar()
 			if ('\n' == char) break
 			chars[index++] = char
 		}
-		StringCache[chars, index]
+		return StringCache[chars, index]
 	}
 
 	operator fun plus(value: Byte) = apply { content().writeByte(value.toInt()) }
