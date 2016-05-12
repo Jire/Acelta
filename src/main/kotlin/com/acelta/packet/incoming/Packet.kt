@@ -1,5 +1,6 @@
 package com.acelta.packet.incoming
 
+import com.acelta.net.Session
 import com.acelta.packet.Packeteer
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
@@ -13,8 +14,8 @@ abstract class Packet<LISTENER>(val id: Int) {
 		for (i in 0..listeners.size - 1) listeners[i].body()
 	}
 
-	abstract fun Packeteer.receive()
+	abstract fun Packeteer.receive(session: Session)
 
-	operator fun invoke(packeteer: Packeteer) = packeteer.receive()
+	operator fun invoke(packeteer: Packeteer, session: Session) = packeteer.receive(session)
 
 }
