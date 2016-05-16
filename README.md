@@ -9,12 +9,18 @@ RuneScape emulation rethought; Acelta reimagines with elegant, highly-performant
 
 #### Zero-garbage packet receiving
 Acelta receives packets in a straightforward, no-overhead dispatch system for which it is trivial to both listen and
-define incoming packets. A zero-garbage, lock-free inter-thread messaging queue is used to link Netty's networking
-threads with the game thread.
+define incoming packets.
+
+A zero-garbage, lock-free inter-thread messaging queue is used to link Netty's networking
+threads with the game thread. `PacketConductor` eliminates the necessity for individual pipeline handlers for different
+game states.
 
 #### Zero-garbage packet sending
 Acelta uses simplistic extension-function definitions to define outgoing packets. This system works in concert with
 the "one buffer per session" approach to minimize write overhead.
+
+Because of this approach, no Netty encoder is needed. Packet queueing is completely avoided for both incoming and
+outgoing packets in favor of spare flushing.
 
 #### Single game thread
 Using a single game thread allows you to use simplistic, overhead-free techniques and libraries for game logic
