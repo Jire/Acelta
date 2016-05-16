@@ -1,6 +1,8 @@
 package com.acelta.packet
 
 import com.acelta.util.StringCache
+import com.acelta.util.nums.int
+import com.acelta.util.nums.usin
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.DefaultByteBufHolder
 

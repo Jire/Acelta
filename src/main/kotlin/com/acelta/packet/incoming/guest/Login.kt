@@ -3,7 +3,7 @@ package com.acelta.packet.incoming.guest
 import com.acelta.net.Session
 import com.acelta.packet.Packeteer
 import com.acelta.packet.incoming.Packet
-import com.acelta.packet.usin
+import com.acelta.util.nums.usin
 
 interface LoginListener {
 	fun on(session: Session, version: Int, release: Int, highDetail: Boolean,

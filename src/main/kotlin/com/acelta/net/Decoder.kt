@@ -1,7 +1,7 @@
 package com.acelta.net
 
 import com.acelta.packet.Packeteer
-import com.acelta.packet.usin
+import com.acelta.util.nums.usin
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder

@@ -1,10 +1,10 @@
 package com.acelta.packet.outgoing
 
 import com.acelta.net.Session
-import com.acelta.packet.a
-import com.acelta.packet.byte
-import com.acelta.packet.leA
-import com.acelta.packet.short
+import com.acelta.util.nums.a
+import com.acelta.util.nums.byte
+import com.acelta.util.nums.leA
+import com.acelta.util.nums.short
 
 fun Session.handshakeResponse(id: Int, sessionKey: Long) = this + 0L + id.byte + sessionKey
 
