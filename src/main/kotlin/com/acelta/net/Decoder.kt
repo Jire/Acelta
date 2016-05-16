@@ -12,7 +12,7 @@ internal class Decoder : ByteToMessageDecoder() {
 		val session = ctx.attr(Session.KEY).get() ?: return
 		with(Packeteer(buf)) {
 			val id = byte().usin()
-			session.conductor.get().incoming(id, session, this)
+			session.conductor.get().receive(id, session, this)
 		}
 	}
 

@@ -9,9 +9,13 @@ import com.acelta.packet.outgoing.loginResponse
 
 abstract class PacketConductor(packetCapacity: Int = 256) {
 
-	protected val incoming = arrayOfNulls<Packet<*>>(packetCapacity)
+	private val incoming = arrayOfNulls<Packet<*>>(packetCapacity)
 
-	fun incoming(id: Int, session: Session, input: Packeteer) {
+	operator fun set(id: Int, packet: Packet<*>) {
+		incoming[id] = packet
+	}
+
+	fun receive(id: Int, session: Session, input: Packeteer) {
 		val packet = incoming[id] ?: return
 		packet(input, session)
 	}
@@ -19,15 +23,15 @@ abstract class PacketConductor(packetCapacity: Int = 256) {
 	object Guest : PacketConductor() {
 		init {
 			// Manually register packets
-			incoming[Handshake.id] = Handshake
-			incoming[Login.id] = Login
+			this[Handshake.id] = Handshake
+			this[Login.id] = Login
 
 			// Simplistic packet handlers for login
 			Handshake { nameHash -> handshakeResponse(2, 0).flush() }
 			Login { ver, rel, hd, uid, user, pass -> loginResponse(2, 2, false).flush() }
 		}
 	}
-	
+
 	object Game : PacketConductor()
 
 }
