@@ -15,7 +15,7 @@ object Tasks {
 		tasks.add(task)
 	}
 
-	inline fun delayed(ticks: Int = 1, crossinline runnable: () -> Unit) = object : TickTask(ticks) {
+	inline fun delayed(ticks: Int = 1, crossinline runnable: () -> Any) = object : TickTask(ticks) {
 		override fun run() {
 			runnable()
 			stop()
@@ -24,14 +24,11 @@ object Tasks {
 
 	inline fun repeating(ticks: Int = 1, crossinline task: () -> Boolean) = object : TickTask(ticks) {
 		override fun run() {
-			if (task())
-				stop()
+			if (task()) stop()
 		}
 	}
 
-	inline fun continuous(ticks: Int = 1, crossinline runnable: () -> Unit) = repeating(ticks) {
-		runnable(); false
-	}
+	inline fun continuous(ticks: Int = 1, crossinline runnable: () -> Any) = repeating(ticks) { runnable(); false }
 
 }
 
