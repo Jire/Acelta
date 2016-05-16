@@ -38,11 +38,7 @@ object Tasks {
 
 	inline fun continuous(ticks: Int = 1, crossinline body: () -> Any) = repeating(ticks) { body(); false }
 
-	inline fun immediate(crossinline body: () -> Any) = object : Task {
-		override fun finish(): Boolean {
-			body(); return true
-		}
-	}
+	fun execute(body: () -> Any) = executor.submit(body)
 
 }
 
