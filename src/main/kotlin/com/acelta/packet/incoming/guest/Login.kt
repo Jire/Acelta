@@ -26,7 +26,7 @@ object Login : Packet<LoginListener>(16) {
 		dispatch { on(session, version, release, highDetail, uid, username, password) }
 	}
 
-	inline operator fun invoke(crossinline body: (Session).(Int, Int, Boolean, Int, String, String) -> Any)
+	inline operator fun invoke(crossinline body: (Session).(Int, Int, Boolean, Int, String, String) -> Unit)
 			= Login.attach(object : LoginListener {
 		override fun on(session: Session, version: Int, release: Int, highDetail: Boolean,
 		                uid: Int, username: String, password: String) {

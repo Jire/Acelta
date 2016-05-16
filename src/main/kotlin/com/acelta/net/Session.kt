@@ -1,5 +1,6 @@
 package com.acelta.net
 
+import com.acelta.game.Player
 import com.acelta.packet.PacketConductor
 import com.acelta.packet.Packeteer
 import io.netty.buffer.Unpooled
@@ -14,6 +15,7 @@ class Session(val channel: Channel) : Packeteer(Unpooled.buffer()) {
 	}
 
 	val conductor: AtomicReference<PacketConductor> = AtomicReference(PacketConductor.Guest)
+	lateinit var player: Player
 
 	fun flush() {
 		retain()

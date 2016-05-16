@@ -1,5 +1,7 @@
 package com.acelta.packet
 
+import com.acelta.game.Player
+import com.acelta.game.world.Position
 import com.acelta.net.Session
 import com.acelta.packet.incoming.Packet
 import com.acelta.packet.incoming.guest.Handshake
@@ -33,7 +35,11 @@ abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 2
 		init {
 			// Simplistic packet handlers for login, should be done in a plugin.
 			Handshake { nameHash -> handshakeResponse(2, 0).flush() }
-			Login { ver, rel, hd, uid, user, pass -> loginResponse(2, 2, false).flush() }
+			Login { ver, rel, hd, uid, user, pass ->
+				loginResponse(2, 2, false).flush()
+				player = Player(0, Position(), this)
+				conductor.set(Game)
+			}
 		}
 	}
 
