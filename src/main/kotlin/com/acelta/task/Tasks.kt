@@ -34,3 +34,7 @@ object Tasks {
 	}
 
 }
+
+operator fun Task.unaryPlus() {
+	Tasks += this
+}
