@@ -1,10 +1,18 @@
 package com.acelta.task
 
+import com.acelta.CYCLE_MS
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
+import java.util.concurrent.Executors.newSingleThreadScheduledExecutor
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
 object Tasks {
 
 	private val tasks = ObjectArrayList<Task>()
+	private val executor = newSingleThreadScheduledExecutor()
+
+	init {
+		executor.scheduleAtFixedRate({ tick() }, CYCLE_MS, CYCLE_MS, MILLISECONDS)
+	}
 
 	fun tick() {
 		val it = tasks.iterator()
@@ -15,20 +23,22 @@ object Tasks {
 		tasks.add(task)
 	}
 
-	inline fun delayed(ticks: Int = 1, crossinline runnable: () -> Any) = object : TickTask(ticks) {
+	inline fun delayed(ticks: Int = 1, crossinline body: () -> Any) = object : TickTask(ticks) {
 		override fun run() {
-			runnable()
+			body()
 			stop()
 		}
 	}
 
-	inline fun repeating(ticks: Int = 1, crossinline task: () -> Boolean) = object : TickTask(ticks) {
+	inline fun repeating(ticks: Int = 1, crossinline body: () -> Boolean) = object : TickTask(ticks) {
 		override fun run() {
-			if (task()) stop()
+			if (body()) stop()
 		}
 	}
 
-	inline fun continuous(ticks: Int = 1, crossinline runnable: () -> Any) = repeating(ticks) { runnable(); false }
+	inline fun continuous(ticks: Int = 1, crossinline body: () -> Any) = repeating(ticks) { body(); false }
+
+	fun immediate(body: () -> Any) = executor.submit(body)
 
 }
 
