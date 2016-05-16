@@ -9,12 +9,9 @@ import java.util.concurrent.TimeUnit
 
 const val CYCLE_MS = 600L
 
-val gameExecutor = newSingleThreadScheduledExecutor()
-
 fun main(args: Array<String>) {
 	Server.bind()
-	gameExecutor.scheduleAtFixedRate({
-		Tasks.tick()
-	}, CYCLE_MS, CYCLE_MS, TimeUnit.MILLISECONDS)
+	newSingleThreadScheduledExecutor().scheduleAtFixedRate(
+			{ Tasks.tick() },CYCLE_MS, CYCLE_MS, TimeUnit.MILLISECONDS)
 	println("Acelta has started.")
 }
