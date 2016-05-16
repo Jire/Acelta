@@ -1,11 +1,12 @@
 package com.acelta.task
 
-import com.acelta.CYCLE_MS
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import java.util.concurrent.Executors.newSingleThreadScheduledExecutor
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
 object Tasks {
+
+	const val CYCLE_MS = 600L
 
 	private val tasks = ObjectArrayList<Task>()
 	private val executor = newSingleThreadScheduledExecutor()
