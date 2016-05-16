@@ -8,6 +8,8 @@ import com.acelta.packet.incoming.guest.Handshake
 import com.acelta.packet.incoming.guest.Login
 import com.acelta.packet.outgoing.handshakeResponse
 import com.acelta.packet.outgoing.loginResponse
+import com.acelta.packet.outgoing.mapRegion
+import com.acelta.packet.outgoing.playerDetails
 import org.reflections.Reflections
 
 abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 256) {
@@ -27,18 +29,22 @@ abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 2
 	}
 
 	fun receive(id: Int, session: Session, input: Packeteer) {
-		val packet = incoming[id] ?: return
-		packet(input, session)
+		val packet = incoming[id]
+		if (packet == null) println("Unhandled packet: $id")
+		else packet(input, session)
 	}
 
 	object Guest : PacketConductor("incoming.guest") {
 		init {
 			// Simplistic packet handlers for login, should be done in a plugin.
-			Handshake { nameHash -> handshakeResponse(2, 0).flush() }
+			Handshake { nameHash -> handshakeResponse(0, 0); flush() }
 			Login { ver, rel, hd, uid, user, pass ->
-				loginResponse(2, 2, false).flush()
-				player = Player(0, Position(), this)
+				val index = 1
+				loginResponse(2, 2, false); playerDetails(true, index); flush()
+				player = Player(index, Position(), this)
 				conductor.set(Game)
+				player.mapRegion()
+				flush()
 			}
 		}
 	}

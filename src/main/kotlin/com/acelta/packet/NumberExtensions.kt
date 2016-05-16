@@ -4,47 +4,85 @@ import java.lang.Byte.toUnsignedInt
 import java.lang.Integer.toUnsignedLong
 import java.lang.Short.toUnsignedInt
 
-fun Short.le(): Short {
-	val i = toInt()
-	val first = i and 0xFF
-	val second = i shr 8
-	return (first or second).toShort()
-}
+val Short.le: Short
+	get() {
+		val i = int
+		val first = i and 0xFF
+		val second = i shr 8
+		return (first or second).short
+	}
 
-fun Int.le(): Int {
-	val first = this shr 24
-	val second = this shr 16
-	val third = this shr 8
-	val fourth = this and 0xFF
-	return first or second or third or fourth
-}
+val Short.leA: Short
+	get() {
+		val i = int
+		val first = i + 128
+		val second = i shr 8
+		return (first or second).short
+	}
 
-fun Byte.a() = (this + 128).toByte()
+val Int.le: Int
+	get() {
+		val first = this shr 24
+		val second = this shr 16
+		val third = this shr 8
+		val fourth = this and 0xFF
+		return first or second or third or fourth
+	}
 
-fun Short.a(): Short {
-	val i = toInt()
-	val first = i shr 8
-	val second = i + 128
-	return (first or second).toShort()
-}
+val Byte.a: Byte
+	get() = (this + 128).byte
 
-fun Byte.s() = (this - 128).toByte()
+val Short.a: Short
+	get() {
+		val i = int
+		val first = i shr 8
+		val second = i + 128
+		return (first or second).short
+	}
 
-fun Short.s(): Short {
-	val i = toInt()
-	val first = i - 128
-	val second = i shr 8
-	return (first or second).toShort()
-}
+val Byte.s: Byte
+	get() = (this - 128).byte
 
-fun Byte.c() = (-this).toByte()
+val Short.s: Short
+	get() {
+		val i = int
+		val first = i - 128
+		val second = i shr 8
+		return (first or second).short
+	}
 
-fun Byte.usin() = toUnsignedInt(this)
+val Byte.c: Byte
+	get() = (-this).byte
 
-fun Short.usin() = toUnsignedInt(this)
+val Byte.usin: Int
+	get() = toUnsignedInt(this)
 
-fun Int.usin() = toUnsignedLong(this)
+val Short.usin: Int
+	get() = toUnsignedInt(this)
 
-fun Boolean.toInt() = if (this) 1 else 0
+val Int.usin: Long
+	get() = toUnsignedLong(this)
 
-fun Boolean.toByte() = toInt().toByte()
+val Byte.int: Int
+	get() = toInt()
+
+val Short.byte: Byte
+	get() = toByte()
+
+val Short.int: Int
+	get() = toInt()
+
+val Int.byte: Byte
+	get() = toByte()
+
+val Int.short: Short
+	get() = toShort()
+
+val Int.long: Long
+	get() = toLong()
+
+val Boolean.int: Int
+	get() = if (this) 1 else 0
+
+val Boolean.byte: Byte
+	get() = int.byte
