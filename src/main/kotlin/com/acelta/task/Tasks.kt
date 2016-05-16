@@ -10,9 +10,9 @@ object Tasks {
 	private val tasks = ObjectArrayList<Task>()
 	private val executor = newSingleThreadScheduledExecutor()
 
-	init {
-		executor.scheduleAtFixedRate({ tick() }, CYCLE_MS, CYCLE_MS, MILLISECONDS)
-	}
+	init { executor.scheduleAtFixedRate({ tick() }, CYCLE_MS, CYCLE_MS, MILLISECONDS) }
+
+	fun execute(body: () -> Any) = executor.submit(body)
 
 	fun tick() {
 		val it = tasks.iterator()
@@ -37,8 +37,6 @@ object Tasks {
 	}
 
 	inline fun continuous(ticks: Int = 1, crossinline body: () -> Any) = repeating(ticks) { body(); false }
-
-	fun execute(body: () -> Any) = executor.submit(body)
 
 }
 
