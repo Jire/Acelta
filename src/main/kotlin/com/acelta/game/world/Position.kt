@@ -8,4 +8,10 @@ data class Position(var x: Int = DEFAULT_X, var y: Int = DEFAULT_Y, var z: Int =
 		const val DEFAULT_Z = 0
 	}
 
+	val regionX: Int
+		get() = (x shr 3) - 6
+
+	val regionY: Int
+		get() = (y shr 3) - 6
+
 }
