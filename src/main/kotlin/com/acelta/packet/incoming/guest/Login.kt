@@ -11,11 +11,19 @@ interface LoginListener {
 object Login : Packet<LoginListener>(16) {
 
 	override fun Session.receive() {
-		val version = 0xFF - byte.usin
+		val fullLength = byte.usin
+		if (readable < fullLength) return
+
+		val version = 255 - byte.usin
 		val release = short.usin
 		val highDetail = boolean
 
-		skip(9 /* CRCs */ + 1 /* block length */ + 1 /* block ID */ + 4 /* ISAAC keys */)
+		skip(9 * Integer.BYTES) // CRCs
+
+		val sessionBlockLength = byte.usin
+		if (readable < sessionBlockLength) return
+		val sessionBlockID = byte.usin
+		skip(4 * Integer.BYTES) // session block keys
 
 		val uid = int
 		val username = string

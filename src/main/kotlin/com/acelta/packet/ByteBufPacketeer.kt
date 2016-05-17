@@ -37,9 +37,9 @@ class ByteBufPacketeer(data: ByteBuf) : Packeteer, DefaultByteBufHolder(data) {
 		get() {
 			var index = 0
 			while (readable > 0) {
-				val char = byte.usin.toChar()
-				if ('\n' == char) break
-				chars[index++] = char
+				val read = byte.usin
+				if (10 == read) break
+				chars[index++] = read.toChar()
 			}
 			return StringCache[chars, index]
 		}

@@ -6,7 +6,7 @@ import com.acelta.util.nums.byte
 import com.acelta.util.nums.leA
 import com.acelta.util.nums.short
 
-fun Session.handshakeResponse(id: Int, sessionKey: Long) = this + 0L + id.byte + sessionKey
+fun Session.handshakeResponse(sessionKey: Long, id: Int) = this + 0L + id.byte + sessionKey
 
 fun Session.loginResponse(id: Int, crown: Int, flagged: Boolean) = this + id.byte + crown.byte + flagged
 

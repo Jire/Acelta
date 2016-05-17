@@ -32,16 +32,14 @@ abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 2
 	fun receive(id: Int, session: Session) {
 		val packet = incoming[id]
 		if (packet == null) log("UNHANDLED PACKET (id: $id)", 2)
-		else {
-			packet(session)
-			log("HANDLED PACKET (id: $id)", 2)
-		}
+		else packet(session)
 	}
 
 	object Guest : PacketConductor("incoming.guest") {
 		init {
 			// Simplistic packet handlers for login, should be done in a plugin.
-			Handshake { nameHash -> handshakeResponse(0, 0); log("HANDSHAKE (nameHash: $nameHash)", 2); flush() }
+
+			Handshake { nameHash -> handshakeResponse(0, 0); flush() }
 			Login { ver, rel, hd, uid, user, pass ->
 				val index = 1
 
@@ -50,7 +48,6 @@ abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 2
 
 				player = Player(index, Position(), this)
 				conductor.set(Game)
-
 				player.mapRegion()
 
 				flush()
