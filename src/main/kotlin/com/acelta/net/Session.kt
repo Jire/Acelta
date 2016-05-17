@@ -16,7 +16,7 @@ class Session(val channel: Channel, override var write: ByteBufPacketeer = ByteB
 
 	fun flush() = with(write.content()) {
 		retain()
-		channel.writeAndFlush(this)
+		channel.writeAndFlush(this, null)
 		clear()
 	}
 
