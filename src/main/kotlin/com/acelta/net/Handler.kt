@@ -17,12 +17,17 @@ internal class Handler : ByteToMessageDecoder() {
 		conductor.get().receive(id, this)
 	}
 
-	override fun channelRegistered(ctx: ChannelHandlerContext) = with(ctx.channel()) { session.set(Session(this)) }
+	override fun channelRegistered(ctx: ChannelHandlerContext) = with(ctx.channel()) {
+		session.set(Session(this))
+	}
 
 	override fun channelUnregistered(ctx: ChannelHandlerContext) {
 		session.get().disconnect()
 		session.set(null)
 		ctx.close()
+	}
+
+	override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
 	}
 
 }
