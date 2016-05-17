@@ -12,7 +12,7 @@ class Session(val channel: Channel, override var write: ByteBufPacketeer = ByteB
 		SplitPacketeer<ByteBufPacketeer>() {
 
 	val conductor: AtomicReference<PacketConductor> = AtomicReference(PacketConductor.Guest)
-	lateinit var player: Player
+	@Volatile lateinit var player: Player
 
 	fun flush() = with(write.content()) {
 		retain()
@@ -24,7 +24,6 @@ class Session(val channel: Channel, override var write: ByteBufPacketeer = ByteB
 		channel.close()
 
 		write.release()
-		read?.release()
 		read = null
 	}
 

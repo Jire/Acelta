@@ -18,7 +18,7 @@ object Login : Packet<LoginListener>(16) {
 		val release = short.usin
 		val highDetail = boolean
 
-		skip(9 * Integer.BYTES) // CRCs
+		skip(9 * Integer.BYTES) // CRC-8 checksums
 
 		val sessionBlockLength = byte.usin
 		if (readable < sessionBlockLength) return

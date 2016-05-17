@@ -10,7 +10,6 @@ import com.acelta.packet.outgoing.handshakeResponse
 import com.acelta.packet.outgoing.loginResponse
 import com.acelta.packet.outgoing.mapRegion
 import com.acelta.packet.outgoing.playerDetails
-import com.acelta.util.log
 import org.reflections.Reflections
 
 abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 256) {
@@ -31,8 +30,9 @@ abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 2
 
 	fun receive(id: Int, session: Session) {
 		val packet = incoming[id]
-		if (packet == null) log("UNHANDLED PACKET (id: $id)", 2)
-		else packet(session)
+		if (packet != null) packet(session)
+		/*if (packet == null) log("UNHANDLED PACKET (id: $id)", 2)
+		else packet(session)*/
 	}
 
 	object Guest : PacketConductor("incoming.guest") {
@@ -52,7 +52,7 @@ abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 2
 
 				flush()
 
-				log("LOGIN (user: $user, pass: $pass)", 2)
+				println("LOGIN (user: $user, pass: $pass)")
 			}
 		}
 	}
