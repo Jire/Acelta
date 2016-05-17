@@ -41,6 +41,9 @@ interface Packeteer {
 
 	operator fun plus(value: Boolean) = apply { plus(value.byte) }
 
-	operator fun plus(value: String) = plus(value.toByteArray())
+	operator fun plus(value: String) = apply {
+		plus(value.toByteArray())
+		plus('\n'.toByte())
+	}
 
 }

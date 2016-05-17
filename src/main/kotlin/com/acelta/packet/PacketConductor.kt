@@ -6,11 +6,11 @@ import com.acelta.net.Session
 import com.acelta.packet.incoming.Packet
 import com.acelta.packet.incoming.guest.Handshake
 import com.acelta.packet.incoming.guest.Login
-import com.acelta.packet.incoming.guest.LoginListener
 import com.acelta.packet.outgoing.handshakeResponse
 import com.acelta.packet.outgoing.loginResponse
 import com.acelta.packet.outgoing.mapRegion
 import com.acelta.packet.outgoing.playerDetails
+import com.acelta.util.log
 import org.reflections.Reflections
 
 abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 256) {
@@ -31,23 +31,17 @@ abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 2
 
 	fun receive(id: Int, session: Session) {
 		val packet = incoming[id]
-		if (packet == null) println("Unhandled packet: $id")
+		if (packet == null) log("UNHANDLED PACKET (id: $id)", 2)
 		else {
 			packet(session)
-			println("Handled packet: $id")
+			log("HANDLED PACKET (id: $id)", 2)
 		}
 	}
 
 	object Guest : PacketConductor("incoming.guest") {
 		init {
 			// Simplistic packet handlers for login, should be done in a plugin.
-			Handshake { nameHash -> handshakeResponse(0, 0); flush() }
-			Login.attach(object : LoginListener {
-				override fun Session.on(version: Int, release: Int, highDetail: Boolean,
-				                        uid: Int, username: String, password: String) {
-
-				}
-			})
+			Handshake { nameHash -> handshakeResponse(0, 0); log("HANDSHAKE (nameHash: $nameHash)", 2); flush() }
 			Login { ver, rel, hd, uid, user, pass ->
 				val index = 1
 
@@ -61,7 +55,7 @@ abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 2
 
 				flush()
 
-				println("Login from $user, $pass")
+				log("LOGIN (user: $user, pass: $pass)", 2)
 			}
 		}
 	}

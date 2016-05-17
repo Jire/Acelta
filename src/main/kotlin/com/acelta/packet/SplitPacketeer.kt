@@ -1,9 +1,9 @@
 package com.acelta.packet
 
-open class SplitPacketeer<T : Packeteer>(read: T? = null, write: T) : Packeteer {
+open class SplitPacketeer<T : Packeteer> : Packeteer {
 
-	var read: T? = read
-	var write: T = write
+	@Volatile open var read: T? = null
+	@Volatile open lateinit var write: T
 		protected set
 
 	override var readIndex: Int
