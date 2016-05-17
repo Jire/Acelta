@@ -17,13 +17,9 @@ internal class Handler : ByteToMessageDecoder() {
 		conductor.get().receive(id, this)
 	}
 
-	override fun channelRegistered(ctx: ChannelHandlerContext) = with(ctx.channel()) {
-		session.set(Session(this))
-		//println("Registered session from ${remoteAddress()}")
-	}
+	override fun channelRegistered(ctx: ChannelHandlerContext) = with(ctx.channel()) { session.set(Session(this)) }
 
 	override fun channelUnregistered(ctx: ChannelHandlerContext) {
-		println("Unregistered session from ${ctx.channel().remoteAddress()}")
 		session.get().disconnect()
 		session.set(null)
 		ctx.close()
