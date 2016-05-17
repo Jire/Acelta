@@ -1,18 +1,16 @@
 package com.acelta.packet.incoming.guest
 
 import com.acelta.net.Session
-import com.acelta.packet.Packeteer
 import com.acelta.packet.incoming.Packet
 import com.acelta.util.nums.usin
 
 interface LoginListener {
-	fun on(session: Session, version: Int, release: Int, highDetail: Boolean,
-	       uid: Int, username: String, password: String)
+	fun Session.on(version: Int, release: Int, highDetail: Boolean, uid: Int, username: String, password: String)
 }
 
 object Login : Packet<LoginListener>(16) {
 
-	override fun Packeteer.receive(session: Session) {
+	override fun Session.receive() {
 		val version = 0xFF - byte.usin
 		val release = short.usin
 		val highDetail = boolean
@@ -23,15 +21,14 @@ object Login : Packet<LoginListener>(16) {
 		val username = string
 		val password = string
 
-		dispatch { on(session, version, release, highDetail, uid, username, password) }
+		dispatch { on(version, release, highDetail, uid, username, password) }
 	}
 
-	inline operator fun invoke(crossinline body: (Session).(Int, Int, Boolean, Int, String, String) -> Unit)
+	inline operator fun invoke(crossinline on: (Session).(Int, Int, Boolean, Int, String, String) -> Unit)
 			= Login.attach(object : LoginListener {
-		override fun on(session: Session, version: Int, release: Int, highDetail: Boolean,
-		                uid: Int, username: String, password: String) {
-			session.body(version, release, highDetail, uid, username, password)
-		}
+		override fun Session.on(version: Int, release: Int, highDetail: Boolean,
+		                        uid: Int, username: String, password: String)
+				= on(version, release, highDetail, uid, username, password)
 	})
 
 }

@@ -1,24 +1,21 @@
 package com.acelta.packet.incoming.guest
 
 import com.acelta.net.Session
-import com.acelta.packet.Packeteer
 import com.acelta.packet.incoming.Packet
 import com.acelta.util.nums.usin
 
-interface HandshakeListener { fun on(session: Session, nameHash: Int) }
+interface HandshakeListener { fun Session.on(nameHash: Int) }
 
 object Handshake : Packet<HandshakeListener>(14) {
 
-	override fun Packeteer.receive(session: Session) {
+	override fun Session.receive() {
 		val nameHash = byte.usin
 
-		dispatch { on(session, nameHash) }
+		dispatch { on(nameHash) }
 	}
 
-	inline operator fun invoke(crossinline body: (Session).(Int) -> Any) = attach(object : HandshakeListener {
-		override fun on(session: Session, nameHash: Int) {
-			session.body(nameHash)
-		}
+	inline operator fun invoke(crossinline on: (Session).(Int) -> Unit) = attach(object : HandshakeListener {
+		override fun Session.on(nameHash: Int) = on(nameHash)
 	})
 
 }

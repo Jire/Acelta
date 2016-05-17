@@ -8,7 +8,6 @@ internal class Handler : ChannelInboundHandlerAdapter() {
 	private var session: Session? = null
 
 	override fun channelRegistered(ctx: ChannelHandlerContext) {
-		// TODO create a DoS prevention service
 		session = Session(ctx.channel())
 		ctx.attr(Session.KEY).set(session)
 	}
