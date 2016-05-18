@@ -14,16 +14,15 @@ class Session(val channel: Channel, override var write: ByteBufPacketeer = ByteB
 	@Volatile lateinit var player: Player
 
 	fun flush() = with(write.content()) {
-		retain()
-		channel.writeAndFlush(this, channel.voidPromise())
+		channel.writeAndFlush(retain(), channel.voidPromise())
 		clear()
 	}
 
 	fun disconnect() {
-		channel.close()
-
 		write.release()
 		read = null
+
+		channel.close()
 	}
 
 }
