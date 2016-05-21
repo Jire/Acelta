@@ -18,6 +18,6 @@ class PlayerSend(override val it: Player, private val ses: Session = it.session)
 
 	fun msg(message: String) = ses + 253.byte + message
 
-	fun update() = (ses + 81.byte).bits(11, 2047) + 0.byte
+	fun update() = (ses + 81.byte).bitAccess().bits(11, 2047).byteAccess() + 0.byte
 
 }
