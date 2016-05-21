@@ -108,14 +108,13 @@ interface Packeteer {
 		ensureWritable(requiredSpace)
 
 		while (numBits > bitOffset) {
-			bitOffset = 8
-
 			var tmp = this[bytePos].toInt()
-			tmp = tmp and (BIT_MASKS[bitOffset].inv())
+			tmp = tmp and BIT_MASKS[bitOffset].inv()
 			tmp = tmp or (value shr numBits - bitOffset and BIT_MASKS[bitOffset])
 			this[bytePos++] = tmp
-
 			numBits -= bitOffset
+
+			bitOffset = 8
 		}
 
 		var tmp = this[bytePos].toInt()

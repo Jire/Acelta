@@ -19,12 +19,11 @@ fun PlayerSend.update(mapChanging: Boolean, teleporting: Boolean, updateRequired
 
 	bitAccess()
 
-	if (mapChanging || teleporting)
-		bit(true).bits(2, 3).bits(2, 0).bit(teleporting).bit(updateRequired)
-	else {
-		bit(updateRequired)
-		if (updateRequired) bits(2, 0)
-	}
+	bit(updateRequired || mapChanging || teleporting)
+	if (mapChanging || teleporting) {
+		bits(2, 3 /* 3 = region change */).bits(2, it.position.z).bit(teleporting).bit(updateRequired)
+		bits(7, it.position.localY).bits(7, it.position.localX)
+	} else if (updateRequired) bits(2, 0 /* 0 = no movement, 1 = walk, 2 = run */)
 
 	bits(8, 0 /* player count */)
 	// update other players here

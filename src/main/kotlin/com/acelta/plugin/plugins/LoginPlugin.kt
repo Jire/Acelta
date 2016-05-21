@@ -8,7 +8,7 @@ import com.acelta.packet.incoming.rs317.guest.Login
 import com.acelta.packet.outgoing.rs317.loginResponse
 import com.acelta.packet.outgoing.rs317.playerDetails
 import com.acelta.plugin.Plugin
-import com.acelta.task.Tasks.continuous
+import com.acelta.task.Tasks.repeating
 import com.acelta.task.unaryPlus
 
 object LoginPlugin : Plugin({
@@ -24,18 +24,13 @@ object LoginPlugin : Plugin({
 		flush()
 
 		player = Player(index, Position(), this)
+		player.mapRegionChanging = true
+		player.updateRequired = true
 		conductor.set(Game)
 
-		try {
-			+continuous {
-				try {
-					player.tick()
-				} catch (t: Throwable) {
-					t.printStackTrace()
-				}
-			}
-		} catch (t: Throwable) {
-			t.printStackTrace()
+		+repeating {
+			player.tick()
+			!player.session.channel.isOpen
 		}
 
 		/*with(player.send) {

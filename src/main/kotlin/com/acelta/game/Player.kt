@@ -10,13 +10,17 @@ class Player(id: Int, position: Position, val session: Session) : Entity(id, pos
 
 	val send = PlayerSend(this)
 
-	@Volatile var mapRegionChanging = false
-	@Volatile var teleporting = false
-	@Volatile var updateRequired = false
+	var mapRegionChanging = false
+	var teleporting = false
+	var updateRequired = false
 
 	override fun tick() {
 		if (mapRegionChanging) send.mapRegion()
 		send.update(mapRegionChanging, teleporting, updateRequired)
+
+		mapRegionChanging = false
+		teleporting = false
+		updateRequired = false
 
 		session.flush()
 	}
