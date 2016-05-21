@@ -4,8 +4,9 @@ import com.acelta.game.Player
 import com.acelta.game.world.Position
 import com.acelta.net.Session
 import com.acelta.packet.incoming.Packet
-import com.acelta.packet.incoming.guest.Handshake
-import com.acelta.packet.incoming.guest.Login
+import com.acelta.packet.incoming.rs317.guest.Handshake
+import com.acelta.packet.incoming.rs317.guest.Login
+import com.acelta.packet.outgoing.rs317.*
 import org.reflections.Reflections
 
 abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 256) {
@@ -29,7 +30,7 @@ abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 2
 		packet(session)
 	}
 
-	object Guest : PacketConductor("incoming.guest") {
+	object Guest : PacketConductor("incoming.rs317.guest") {
 		init {
 			// Simplistic packet handlers for login, should be done in a plugin.
 
@@ -50,6 +51,7 @@ abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 2
 
 				with(player.send) {
 					for (i in 0..20) setSkill(i, 1, 1)
+
 					setInterface(0, 2423)
 					setInterface(1, 3917)
 					setInterface(2, 638)
@@ -75,6 +77,6 @@ abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 2
 		}
 	}
 
-	object Game : PacketConductor("incoming.game")
+	object Game : PacketConductor("incoming.rs317.game")
 
 }

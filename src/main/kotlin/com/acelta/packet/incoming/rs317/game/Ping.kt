@@ -1,4 +1,4 @@
-package com.acelta.packet.incoming.game
+package com.acelta.packet.incoming.rs317.game
 
 import com.acelta.game.Player
 import com.acelta.net.Session

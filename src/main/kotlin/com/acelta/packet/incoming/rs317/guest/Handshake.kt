@@ -1,4 +1,4 @@
-package com.acelta.packet.incoming.guest
+package com.acelta.packet.incoming.rs317.guest
 
 import com.acelta.net.Session
 import com.acelta.packet.incoming.Packet
