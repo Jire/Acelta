@@ -1,5 +1,7 @@
 package com.acelta.packet
 
+import com.acelta.packet.Packeteer.AccessMode
+
 open class SplitPacketeer<T : Packeteer> : Packeteer {
 
 	@Volatile open var read: T? = null
@@ -35,6 +37,8 @@ open class SplitPacketeer<T : Packeteer> : Packeteer {
 			write.writeIndex = value
 		}
 
+	override fun ensureWritable(bytes: Int) = write.ensureWritable(bytes)
+
 	override fun set(index: Int, value: Int) {
 		write[index] = value
 	}
@@ -47,5 +51,16 @@ open class SplitPacketeer<T : Packeteer> : Packeteer {
 	override fun plus(value: Long) = write + value
 
 	override fun plus(value: String) = write + value
+
+	override var bitIndex: Int = 0
+		get() = write.bitIndex
+
+	override var accessMode: AccessMode
+		get() = write.accessMode
+		set(value) {
+			write.accessMode = value
+		}
+
+	override fun bits(bits: Int, value: Int) = write.bits(bits, value)
 
 }

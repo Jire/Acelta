@@ -22,7 +22,7 @@ object Login : Packet<LoginListener>(16) {
 
 		val sessionBlockLength = byte.usin
 		if (readable < sessionBlockLength) return
-		val sessionBlockID = byte.usin
+		byte.usin // session block ID
 		skip(4 * Integer.BYTES) // session block keys
 
 		val uid = int
