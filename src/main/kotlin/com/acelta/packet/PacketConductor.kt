@@ -40,9 +40,10 @@ abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 2
 			Login { ver, rel, hd, uid, user, pass ->
 				val index = 1
 
-				send.loginResponse(2, 2, false)
-				send.playerDetails(true, index)
-				flush()
+				with(send) {
+					loginResponse(2, 2, false)
+					playerDetails(true, index)
+				}
 
 				player = Player(index, Position(), this)
 				conductor.set(Game)
@@ -64,7 +65,6 @@ abstract class PacketConductor(packageExtension: String, packetCapacity: Int = 2
 					setInterface(13, 2699)
 
 					mapRegion()
-					update()
 
 					msg("Welcome to Acelta.")
 				}
