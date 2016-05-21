@@ -61,6 +61,12 @@ open class SplitPacketeer<T : Packeteer> : Packeteer {
 			write.accessMode = value
 		}
 
+	override fun bitAccess() = write.bitAccess()
+
+	override fun byteAccess() = write.byteAccess()
+
+	override fun ensureAccessMode(accessMode: AccessMode) = write.ensureAccessMode(accessMode)
+
 	override fun bits(bits: Int, value: Int) = write.bits(bits, value)
 
 }

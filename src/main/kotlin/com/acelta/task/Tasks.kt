@@ -1,6 +1,7 @@
 package com.acelta.task
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
+import java.util.*
 import java.util.concurrent.Executors.newSingleThreadScheduledExecutor
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
@@ -8,7 +9,7 @@ object Tasks {
 
 	const val CYCLE_MS = 600L
 
-	private val tasks = ObjectArrayList<Task>()
+	private val tasks = Collections.synchronizedList(ObjectArrayList<Task>())
 	private val executor = newSingleThreadScheduledExecutor()
 
 	init { executor.scheduleAtFixedRate({ tick() }, CYCLE_MS, CYCLE_MS, MILLISECONDS) }

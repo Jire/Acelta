@@ -14,4 +14,23 @@ fun PlayerSend.mapRegion() = ses + 73.byte + (it.position.regionX + 6).short.a +
 
 fun PlayerSend.msg(message: String) = ses + 253.byte + message
 
-fun PlayerSend.update() = (ses + 81.byte).bitAccess().bits(11, 2047).byteAccess() + 0.byte
+fun PlayerSend.update(mapChanging: Boolean, teleporting: Boolean, updateRequired: Boolean) = with(ses) {
+	this + 81.byte
+
+	bitAccess()
+
+	if (mapChanging || teleporting)
+		bit(true).bits(2, 3).bits(2, 0).bit(teleporting).bit(updateRequired)
+	else {
+		bit(updateRequired)
+		if (updateRequired) bits(2, 0)
+	}
+
+	bits(8, 0 /* player count */)
+	// update other players here
+	bits(11, 2047 /* max player count */)
+
+	byteAccess()
+
+	if (updateRequired) this + 0.byte
+}

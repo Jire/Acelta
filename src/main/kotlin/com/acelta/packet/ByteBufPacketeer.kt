@@ -15,10 +15,7 @@ class ByteBufPacketeer(data: ByteBuf) : Packeteer, DefaultByteBufHolder(data) {
 			content().setIndex(value, writeIndex)
 		}
 
-	override fun get(index: Int): Byte {
-		ensureAccessMode(AccessMode.BYTE)
-		return content().getByte(index)
-	}
+	override fun get(index: Int) = content().getByte(index)
 
 	override fun skip(bytes: Int) {
 		ensureAccessMode(AccessMode.BYTE)
@@ -26,10 +23,7 @@ class ByteBufPacketeer(data: ByteBuf) : Packeteer, DefaultByteBufHolder(data) {
 	}
 
 	override val readable: Int
-		get() {
-			ensureAccessMode(AccessMode.BYTE)
-			return content().readableBytes()
-		}
+		get() = content().readableBytes()
 
 	override val byte: Byte
 		get() {
@@ -75,7 +69,6 @@ class ByteBufPacketeer(data: ByteBuf) : Packeteer, DefaultByteBufHolder(data) {
 	override fun ensureWritable(bytes: Int) = apply { content().ensureWritable(bytes) }
 
 	override fun set(index: Int, value: Int) {
-		ensureAccessMode(AccessMode.BYTE)
 		content().setByte(index, value)
 	}
 
@@ -88,14 +81,17 @@ class ByteBufPacketeer(data: ByteBuf) : Packeteer, DefaultByteBufHolder(data) {
 		ensureAccessMode(AccessMode.BYTE)
 		content().writeByte(value.int)
 	}
+
 	override fun plus(value: Short) = apply {
 		ensureAccessMode(AccessMode.BYTE)
 		content().writeShort(value.int)
 	}
+
 	override fun plus(value: Int) = apply {
 		ensureAccessMode(AccessMode.BYTE)
 		content().writeInt(value)
 	}
+
 	override fun plus(value: Long) = apply {
 		ensureAccessMode(AccessMode.BYTE)
 		content().writeLong(value)
