@@ -87,13 +87,11 @@ interface Packeteer {
 	fun bitAccess() = apply {
 		bitIndex = writeIndex * 8
 		accessMode = AccessMode.BIT
-		System.err.println("Set bit access.")
 	}
 
 	fun byteAccess() = apply {
 		writeIndex = (bitIndex + 7) / 8
 		accessMode = AccessMode.BYTE
-		System.err.println("Set byte access.")
 	}
 
 	fun bits(bits: Int, value: Int) = apply {

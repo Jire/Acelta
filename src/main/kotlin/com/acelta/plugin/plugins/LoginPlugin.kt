@@ -29,7 +29,6 @@ object LoginPlugin : Plugin({
 		try {
 			+continuous {
 				try {
-					println("Wantsum?")
 					player.tick()
 				} catch (t: Throwable) {
 					t.printStackTrace()

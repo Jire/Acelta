@@ -19,8 +19,6 @@ class Player(id: Int, position: Position, val session: Session) : Entity(id, pos
 		send.update(mapRegionChanging, teleporting, updateRequired)
 
 		session.flush()
-
-		println("Flushed the pipes lad.")
 	}
 
 }
