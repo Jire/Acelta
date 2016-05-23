@@ -10,7 +10,7 @@ abstract class Packet<LISTENER>(val id: Int) {
 	fun attach(listener: LISTENER) = listeners.add(listener)
 
 	protected inline fun dispatch(body: LISTENER.() -> Any) {
-		for (i in 0..listeners.size - 1) listeners[i].body()
+		if (listeners.size > 0) for (i in 0..listeners.size - 1) listeners[i].body()
 	}
 
 	abstract fun Session.receive()

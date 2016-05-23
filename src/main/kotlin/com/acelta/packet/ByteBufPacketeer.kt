@@ -5,45 +5,50 @@ import com.acelta.util.StringCache
 import com.acelta.util.nums.int
 import com.acelta.util.nums.usin
 import io.netty.buffer.ByteBuf
-import io.netty.buffer.DefaultByteBufHolder
 
-class ByteBufPacketeer(data: ByteBuf) : Packeteer, DefaultByteBufHolder(data) {
+class ByteBufPacketeer(data: ByteBuf? = null) : Packeteer {
+
+	lateinit var data: ByteBuf
+
+	init {
+		if (data != null) this.data = data
+	}
 
 	override var readIndex: Int
-		get() = content().readerIndex()
+		get() = data.readerIndex()
 		set(value) {
-			content().setIndex(value, writeIndex)
+			data.setIndex(value, writeIndex)
 		}
 
-	override fun get(index: Int) = content().getByte(index)
+	override fun get(index: Int) = data.getByte(index)
 
 	override fun skip(bytes: Int) {
 		ensureAccessMode(AccessMode.BYTE)
-		content().skipBytes(bytes)
+		data.skipBytes(bytes)
 	}
 
 	override val readable: Int
-		get() = content().readableBytes()
+		get() = data.readableBytes()
 
 	override val byte: Byte
 		get() {
 			ensureAccessMode(AccessMode.BYTE)
-			return content().readByte()
+			return data.readByte()
 		}
 	override val short: Short
 		get() {
 			ensureAccessMode(AccessMode.BYTE)
-			return content().readShort()
+			return data.readShort()
 		}
 	override val int: Int
 		get() {
 			ensureAccessMode(AccessMode.BYTE)
-			return content().readInt()
+			return data.readInt()
 		}
 	override val long: Long
 		get() {
 			ensureAccessMode(AccessMode.BYTE)
-			return content().readLong()
+			return data.readLong()
 		}
 
 	private val chars by lazy(LazyThreadSafetyMode.NONE) { CharArray(256) }
@@ -61,40 +66,40 @@ class ByteBufPacketeer(data: ByteBuf) : Packeteer, DefaultByteBufHolder(data) {
 		}
 
 	override var writeIndex: Int
-		get() = content().writerIndex()
+		get() = data.writerIndex()
 		set(value) {
-			content().setIndex(readIndex, value)
+			data.setIndex(readIndex, value)
 		}
 
-	override fun ensureWritable(bytes: Int) = apply { content().ensureWritable(bytes) }
+	override fun ensureWritable(bytes: Int) = apply { data.ensureWritable(bytes) }
 
 	override fun set(index: Int, value: Int) {
-		content().setByte(index, value)
+		data.setByte(index, value)
 	}
 
 	override fun plus(values: ByteArray) = apply {
 		ensureAccessMode(AccessMode.BYTE)
-		content().writeBytes(values)
+		data.writeBytes(values)
 	}
 
 	override fun plus(value: Byte) = apply {
 		ensureAccessMode(AccessMode.BYTE)
-		content().writeByte(value.int)
+		data.writeByte(value.int)
 	}
 
 	override fun plus(value: Short) = apply {
 		ensureAccessMode(AccessMode.BYTE)
-		content().writeShort(value.int)
+		data.writeShort(value.int)
 	}
 
 	override fun plus(value: Int) = apply {
 		ensureAccessMode(AccessMode.BYTE)
-		content().writeInt(value)
+		data.writeInt(value)
 	}
 
 	override fun plus(value: Long) = apply {
 		ensureAccessMode(AccessMode.BYTE)
-		content().writeLong(value)
+		data.writeLong(value)
 	}
 
 	override var accessMode = AccessMode.BYTE

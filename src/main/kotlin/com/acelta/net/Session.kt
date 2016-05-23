@@ -6,24 +6,30 @@ import com.acelta.packet.PacketConductor
 import com.acelta.packet.SplitPacketeer
 import com.acelta.packet.outgoing.SessionSend
 import io.netty.channel.Channel
-import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater
 
-class Session(val channel: Channel, override var write: ByteBufPacketeer = ByteBufPacketeer(
-		channel.alloc().buffer(9))) : SplitPacketeer<ByteBufPacketeer>() {
+class Session(val channel: Channel, override var read: ByteBufPacketeer = ByteBufPacketeer(),
+              override var write: ByteBufPacketeer = ByteBufPacketeer(
+		              channel.alloc().buffer(9))) : SplitPacketeer<ByteBufPacketeer>() {
+
+	companion object {
+		val CONDUCTOR_UPDATER = AtomicReferenceFieldUpdater
+				.newUpdater<Session, PacketConductor>(Session::class.java, PacketConductor::class.java, "conductor")
+	}
 
 	val send = SessionSend(this)
 
-	val conductor: AtomicReference<PacketConductor> = AtomicReference(PacketConductor.Guest)
+	@Volatile var conductor: PacketConductor = PacketConductor.Guest
 	@Volatile lateinit var player: Player
 
-	fun flush() = with(write.content()) {
+	fun flush() = with(write.data) {
 		channel.writeAndFlush(retain(), channel.voidPromise())
 		clear()
 	}
 
 	fun disconnect() {
-		write.release()
-		read = null
+		read.data.release()
+		write.data.release()
 
 		channel.close()
 	}

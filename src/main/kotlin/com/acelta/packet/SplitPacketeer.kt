@@ -4,32 +4,31 @@ import com.acelta.packet.Packeteer.AccessMode
 
 open class SplitPacketeer<T : Packeteer> : Packeteer {
 
-	@Volatile open var read: T? = null
+	@Volatile open lateinit var read: T
 	@Volatile open lateinit var write: T
-		protected set
 
 	override var readIndex: Int
-		get() = read!!.readIndex
+		get() = read.readIndex
 		set(value) {
-			read!!.readIndex = value
+			read.readIndex = value
 		}
 
-	override fun get(index: Int) = read!![index]
+	override fun get(index: Int) = read[index]
 
-	override fun skip(bytes: Int) = read!!.skip(bytes)
+	override fun skip(bytes: Int) = read.skip(bytes)
 
 	override val readable: Int
-		get() = read!!.readable
+		get() = read.readable
 	override val byte: Byte
-		get() = read!!.byte
+		get() = read.byte
 	override val short: Short
-		get() = read!!.short
+		get() = read.short
 	override val int: Int
-		get() = read!!.int
+		get() = read.int
 	override val long: Long
-		get() = read!!.long
+		get() = read.long
 	override val string: String
-		get() = read!!.string
+		get() = read.string
 
 	override var writeIndex: Int
 		get() = write.writeIndex

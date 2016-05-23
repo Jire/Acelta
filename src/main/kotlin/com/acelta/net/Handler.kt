@@ -1,29 +1,36 @@
 package com.acelta.net
 
-import com.acelta.packet.ByteBufPacketeer
+import com.acelta.net.Session.Companion.CONDUCTOR_UPDATER
 import com.acelta.util.nums.usin
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
-import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater
 
 internal class Handler : ByteToMessageDecoder() {
 
-	private val session = AtomicReference<Session>()
-
-	override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) = with(session.get()!!) {
-		read = ByteBufPacketeer(buf)
-		val id = byte.usin
-		conductor.get().receive(id, this)
+	companion object {
+		private val SESSION_UPDATER = AtomicReferenceFieldUpdater
+				.newUpdater<Handler, Session>(Handler::class.java, Session::class.java, "session")
 	}
 
-	override fun channelRegistered(ctx: ChannelHandlerContext) = with(ctx.channel()) {
-		session.set(Session(this))
+	@Volatile private lateinit var session: Session
+
+	override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>)
+			= with(SESSION_UPDATER.get(this)!!) {
+
+		read.data = buf
+		val id = byte.usin
+		CONDUCTOR_UPDATER.get(this).receive(id, this)
+	}
+
+	override fun channelActive(ctx: ChannelHandlerContext) {
+		SESSION_UPDATER.set(this, Session(ctx.channel()))
 	}
 
 	override fun channelUnregistered(ctx: ChannelHandlerContext) {
-		session.get().disconnect()
-		session.set(null)
+		SESSION_UPDATER.get(this)?.disconnect()
+		SESSION_UPDATER.lazySet(this, null)
 		ctx.close()
 	}
 

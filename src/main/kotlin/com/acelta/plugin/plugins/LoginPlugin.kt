@@ -2,6 +2,7 @@ package com.acelta.plugin.plugins
 
 import com.acelta.game.Player
 import com.acelta.game.world.Position
+import com.acelta.net.Session.Companion.CONDUCTOR_UPDATER
 import com.acelta.packet.PacketConductor
 import com.acelta.packet.PacketConductor.Game
 import com.acelta.packet.incoming.rs317.guest.Login
@@ -26,7 +27,7 @@ object LoginPlugin : Plugin({
 		player = Player(index, Position(), this)
 		player.mapRegionChanging = true
 		player.updateRequired = true
-		conductor.set(Game)
+		CONDUCTOR_UPDATER.set(this, Game)
 
 		+repeating {
 			player.tick()
