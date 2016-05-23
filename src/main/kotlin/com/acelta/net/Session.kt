@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater
 
 class Session(val channel: Channel, override var read: ByteBufPacketeer = ByteBufPacketeer(),
               override var write: ByteBufPacketeer = ByteBufPacketeer(
-		              channel.alloc().buffer(9))) : SplitPacketeer<ByteBufPacketeer>() {
+		              channel.alloc().directBuffer(9))) : SplitPacketeer<ByteBufPacketeer>() {
 
 	companion object {
 		val CONDUCTOR_UPDATER = AtomicReferenceFieldUpdater
