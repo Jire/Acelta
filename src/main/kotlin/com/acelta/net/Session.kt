@@ -22,10 +22,14 @@ class Session(val channel: Channel, override var read: ByteBufPacketeer = ByteBu
 	@Volatile var conductor: PacketConductor = PacketConductor.Guest
 	@Volatile lateinit var player: Player
 
-	fun flush() = with(write.data) {
-		channel.writeAndFlush(retain(), channel.voidPromise())
-		clear()
+	private val flushTask = Runnable {
+		with(write.data) {
+			channel.writeAndFlush(retain(), channel.voidPromise())
+			clear()
+		}
 	}
+
+	fun flush() = channel.eventLoop().execute(flushTask)
 
 	fun disconnect() {
 		read.data.release()

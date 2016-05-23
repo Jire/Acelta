@@ -14,11 +14,10 @@ object Server {
 	const val DEFAULT_PORT = 43594
 
 	val epoll = Epoll.isAvailable()
-	val processors = Runtime.getRuntime().availableProcessors()
-	val threads = if (processors > 2) processors - 2 else 1
+	val threads = Runtime.getRuntime().availableProcessors()
 
 	private val bootstrap = ServerBootstrap()
-	private val group = if (epoll) EpollEventLoopGroup(threads) else NioEventLoopGroup(threads)
+	val group = if (epoll) EpollEventLoopGroup(threads) else NioEventLoopGroup(threads)
 	private val channel = (if (epoll) EpollServerSocketChannel::class.java
 	else NioServerSocketChannel::class.java) as Class<ServerChannel>
 

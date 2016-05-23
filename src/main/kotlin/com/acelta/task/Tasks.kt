@@ -1,5 +1,6 @@
 package com.acelta.task
 
+import com.acelta.net.Server
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import java.util.concurrent.Executors.newSingleThreadScheduledExecutor
 import java.util.concurrent.TimeUnit.MILLISECONDS
@@ -12,7 +13,7 @@ object Tasks {
 	private val executor = newSingleThreadScheduledExecutor()
 
 	init {
-		executor.scheduleAtFixedRate({
+		Server.group.scheduleAtFixedRate({
 			val start = System.nanoTime()
 			try {
 				tick()
