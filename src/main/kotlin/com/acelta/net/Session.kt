@@ -6,15 +6,15 @@ import com.acelta.packet.PacketConductor
 import com.acelta.packet.SplitPacketeer
 import com.acelta.packet.outgoing.SessionSend
 import io.netty.channel.Channel
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater
+import io.netty.util.internal.PlatformDependent.newAtomicReferenceFieldUpdater
 
 class Session(val channel: Channel, override var read: ByteBufPacketeer = ByteBufPacketeer(),
               override var write: ByteBufPacketeer = ByteBufPacketeer(
 		              channel.alloc().directBuffer(9))) : SplitPacketeer<ByteBufPacketeer>() {
 
 	companion object {
-		val CONDUCTOR_UPDATER = AtomicReferenceFieldUpdater
-				.newUpdater<Session, PacketConductor>(Session::class.java, PacketConductor::class.java, "conductor")
+		val CONDUCTOR_UPDATER
+				= newAtomicReferenceFieldUpdater<Session, PacketConductor>(Session::class.java, "conductor")
 	}
 
 	val send = SessionSend(this)
@@ -29,7 +29,7 @@ class Session(val channel: Channel, override var read: ByteBufPacketeer = ByteBu
 		}
 	}
 
-	fun flush() = channel.eventLoop().execute(flushTask)
+	fun flush() = Server.group.execute(flushTask)
 
 	fun disconnect() {
 		read.data.release()

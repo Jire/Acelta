@@ -5,13 +5,12 @@ import com.acelta.util.nums.usin
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater
+import io.netty.util.internal.PlatformDependent.newAtomicReferenceFieldUpdater
 
 internal class Handler : ByteToMessageDecoder() {
 
 	companion object {
-		private val SESSION_UPDATER = AtomicReferenceFieldUpdater
-				.newUpdater<Handler, Session>(Handler::class.java, Session::class.java, "session")
+		private val SESSION_UPDATER = newAtomicReferenceFieldUpdater<Handler, Session>(Handler::class.java, "session")
 	}
 
 	@Volatile private lateinit var session: Session
