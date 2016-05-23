@@ -20,17 +20,17 @@ fun main(args: Array<String>) {
 	val group = NioEventLoopGroup(Runtime.getRuntime().availableProcessors())
 	repeat(CONNECTIONS) {
 		Bootstrap()
-				.group(group)
-				.channel(NioSocketChannel::class.java)
-				.handler(object : ChannelInboundHandlerAdapter() {
-					override fun channelActive(ctx: ChannelHandlerContext) {
-						val buf = ByteBufPacketeer(ctx.alloc().directBuffer())
-						buf + 14.byte + 0.byte + 16.byte + 0.byte + 255.byte + 317.short + true
-						for (i in 1..29) buf + 0.short
-						buf + "acelta$it" + "password"
-						ctx.writeAndFlush(buf.data, ctx.voidPromise())
-					}
-				})
-				.connect(addr)
+			.group(group)
+			.channel(NioSocketChannel::class.java)
+			.handler(object : ChannelInboundHandlerAdapter() {
+				override fun channelActive(ctx: ChannelHandlerContext) {
+					val buf = ByteBufPacketeer(ctx.alloc().directBuffer())
+					buf + 14.byte + 0.byte + 16.byte + 0.byte + 255.byte + 317.short + true
+					for (i in 1..29) buf + 0.short
+					buf + "acelta$it" + "password"
+					ctx.writeAndFlush(buf.data, ctx.voidPromise())
+				}
+			})
+			.connect(addr)
 	}
 }
