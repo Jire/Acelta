@@ -5,6 +5,7 @@ import com.acelta.util.StringCache
 import com.acelta.util.nums.int
 import com.acelta.util.nums.usin
 import io.netty.buffer.ByteBuf
+import io.netty.buffer.PooledByteBufAllocator
 import io.netty.util.concurrent.FastThreadLocal
 
 class ByteBufPacketeer(data: ByteBuf? = null) : Packeteer {
@@ -12,6 +13,12 @@ class ByteBufPacketeer(data: ByteBuf? = null) : Packeteer {
 	companion object {
 		internal val chars = object : FastThreadLocal<CharArray>() {
 			override fun initialValue() = CharArray(256)
+		}
+	}
+
+	object Reusables : FastThreadLocal<Array<ByteBufPacketeer>>() {
+		override fun initialValue(): Array<ByteBufPacketeer> {
+			return Array(8) { ByteBufPacketeer(PooledByteBufAllocator.DEFAULT.directBuffer()) }
 		}
 	}
 

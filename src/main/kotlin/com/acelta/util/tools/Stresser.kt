@@ -1,3 +1,5 @@
+@file:JvmName("Stresser")
+
 package com.acelta.util.tools
 
 import com.acelta.packet.ByteBufPacketeer
