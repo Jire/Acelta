@@ -36,6 +36,8 @@ open class SplitPacketeer<T : Packeteer> : Packeteer {
 			write.writeIndex = value
 		}
 
+	override fun clear() = write.clear()
+
 	override fun ensureWritable(bytes: Int) = write.ensureWritable(bytes)
 
 	override fun set(index: Int, value: Int) {

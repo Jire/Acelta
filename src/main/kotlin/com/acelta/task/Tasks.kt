@@ -1,19 +1,18 @@
 package com.acelta.task
 
-import com.acelta.net.Server
+import com.acelta.net.Server.group
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
-import java.util.concurrent.Executors.newSingleThreadScheduledExecutor
+import java.util.*
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
 object Tasks {
 
 	const val CYCLE_MS = 600L
 
-	private val tasks = ObjectArrayList<Task>()
-	private val executor = newSingleThreadScheduledExecutor()
+	private val tasks = Collections.synchronizedList(ObjectArrayList<Task>())
 
 	init {
-		Server.group.scheduleAtFixedRate({
+		group.scheduleAtFixedRate({
 			val start = System.nanoTime()
 			try {
 				tick()
@@ -25,7 +24,7 @@ object Tasks {
 		}, CYCLE_MS, CYCLE_MS, MILLISECONDS)
 	}
 
-	fun execute(body: () -> Any) = executor.submit(body)
+	fun execute(runnable: Runnable) = group.execute(runnable)
 
 	fun tick() {
 		val it = tasks.iterator()

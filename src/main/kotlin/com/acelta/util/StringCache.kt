@@ -1,13 +1,18 @@
 package com.acelta.util
 
+import io.netty.util.concurrent.FastThreadLocal
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import java.util.*
 
 object StringCache {
 
-	private val map = Int2ObjectOpenHashMap<String>(8192)
+	private val map = object : FastThreadLocal<Int2ObjectOpenHashMap<String>>() {
+		override fun initialValue() = Int2ObjectOpenHashMap<String>(8192)
+	}
 
 	operator fun get(chars: CharArray, max: Int = chars.size - 1, hash: Int = Arrays.hashCode(chars)): String {
+		val map = map.get()
+
 		if (map.containsKey(hash)) {
 			val result = map[hash]
 			if (result != null) return result

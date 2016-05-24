@@ -1,13 +1,13 @@
 package com.acelta.plugin.plugins
 
 import com.acelta.game.Player
+import com.acelta.game.PlayerDetails
 import com.acelta.game.world.Position
 import com.acelta.net.Session.Companion.CONDUCTOR_UPDATER
 import com.acelta.packet.PacketConductor
 import com.acelta.packet.PacketConductor.Game
 import com.acelta.packet.incoming.rs317.guest.Login
-import com.acelta.packet.outgoing.rs317.loginResponse
-import com.acelta.packet.outgoing.rs317.playerDetails
+import com.acelta.packet.outgoing.rs317.*
 import com.acelta.plugin.Plugin
 import com.acelta.task.Tasks.repeating
 import com.acelta.task.unaryPlus
@@ -24,7 +24,7 @@ object LoginPlugin : Plugin({
 		}
 		flush()
 
-		player = Player(index, Position(), this)
+		player = Player(index, Position(), this, PlayerDetails(uid, user))
 		player.mapRegionChanging = true
 		player.updateRequired = true
 		CONDUCTOR_UPDATER.set(this, Game)
@@ -34,7 +34,7 @@ object LoginPlugin : Plugin({
 			!player.session.channel.isOpen
 		}
 
-		/*with(player.send) {
+		with(player.send) {
 			for (i in 0..20) setSkill(i, 1, 1)
 
 			setInterface(0, 2423)
@@ -52,7 +52,8 @@ object LoginPlugin : Plugin({
 			setInterface(13, 2699)
 
 			msg("Welcome to Acelta.")
-		}*/
+		}
+		flush()
 
 		println("LOGIN (user: $user, pass: $pass)")
 	}

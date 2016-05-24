@@ -5,8 +5,15 @@ import com.acelta.util.StringCache
 import com.acelta.util.nums.int
 import com.acelta.util.nums.usin
 import io.netty.buffer.ByteBuf
+import io.netty.util.concurrent.FastThreadLocal
 
 class ByteBufPacketeer(data: ByteBuf? = null) : Packeteer {
+
+	companion object {
+		internal val chars = object : FastThreadLocal<CharArray>() {
+			override fun initialValue() = CharArray(256)
+		}
+	}
 
 	lateinit var data: ByteBuf
 
@@ -51,18 +58,19 @@ class ByteBufPacketeer(data: ByteBuf? = null) : Packeteer {
 			return data.readLong()
 		}
 
-	private val chars by lazy(LazyThreadSafetyMode.NONE) { CharArray(256) }
 	override val string: String
 		get() {
 			ensureAccessMode(AccessMode.BYTE)
+
+			val tChars = chars.get()
 
 			var index = 0
 			while (readable > 0) {
 				val char = byte.usin.toChar()
 				if ('\n' == char) break
-				chars[index++] = char
+				tChars[index++] = char
 			}
-			return StringCache[chars, index]
+			return StringCache[tChars, index]
 		}
 
 	override var writeIndex: Int
@@ -70,6 +78,8 @@ class ByteBufPacketeer(data: ByteBuf? = null) : Packeteer {
 		set(value) {
 			data.setIndex(readIndex, value)
 		}
+
+	override fun clear() = apply { data.clear() }
 
 	override fun ensureWritable(bytes: Int) = apply { data.ensureWritable(bytes) }
 

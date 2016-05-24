@@ -55,6 +55,8 @@ interface Packeteer {
 
 	var writeIndex: Int
 
+	fun clear(): Packeteer
+
 	fun ensureWritable(bytes: Int): Packeteer
 
 	operator fun set(index: Int, value: Int)
@@ -94,11 +96,10 @@ interface Packeteer {
 		accessMode = AccessMode.BYTE
 	}
 
-	fun bits(bits: Int, value: Int) = apply {
+	fun bits(numBits: Int, value: Int) = apply {
 		ensureAccessMode(AccessMode.BIT)
 
-		var numBits = bits
-
+		var numBits = numBits
 		var bytePos = bitIndex shr 3
 		var bitOffset = 8 - (bitIndex and 7)
 		bitIndex += numBits
@@ -108,24 +109,22 @@ interface Packeteer {
 		ensureWritable(requiredSpace)
 
 		while (numBits > bitOffset) {
-			var tmp = this[bytePos].toInt()
+			var tmp = get(bytePos).toInt()
 			tmp = tmp and BIT_MASKS[bitOffset].inv()
 			tmp = tmp or (value shr numBits - bitOffset and BIT_MASKS[bitOffset])
-			this[bytePos++] = tmp
+			set(bytePos++, tmp)
 			numBits -= bitOffset
-
 			bitOffset = 8
 		}
-
-		var tmp = this[bytePos].toInt()
+		var tmp = get(bytePos).toInt()
 		if (numBits == bitOffset) {
-			tmp = tmp and (BIT_MASKS[bitOffset].inv())
+			tmp = tmp and BIT_MASKS[bitOffset].inv()
 			tmp = tmp or (value and BIT_MASKS[bitOffset])
-			this[bytePos] = tmp
+			set(bytePos, tmp)
 		} else {
 			tmp = tmp and (BIT_MASKS[numBits] shl bitOffset - numBits).inv()
-			tmp = tmp or ((value and BIT_MASKS[numBits]) shl bitOffset - numBits)
-			this[bytePos] = tmp
+			tmp = tmp or (value and BIT_MASKS[numBits] shl bitOffset - numBits)
+			set(bytePos, tmp)
 		}
 	}
 
