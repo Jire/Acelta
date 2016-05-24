@@ -22,10 +22,9 @@ object LoginPlugin : Plugin({
 			loginResponse(2, 2, false)
 			playerDetails(true, index)
 		}
-		flush()
 
 		player = Player(index, Position(), this, PlayerDetails(uid, user))
-		player.mapRegionChanging = true
+		player.regionChanging = true
 		player.updateRequired = true
 		CONDUCTOR_UPDATER.set(this, Game)
 
@@ -53,7 +52,6 @@ object LoginPlugin : Plugin({
 
 			msg("Welcome to Acelta.")
 		}
-		flush()
 
 		println("LOGIN (user: $user, pass: $pass)")
 	}

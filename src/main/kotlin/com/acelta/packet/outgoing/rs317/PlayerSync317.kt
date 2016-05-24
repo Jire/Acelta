@@ -9,15 +9,15 @@ import com.acelta.util.nums.c
 import com.acelta.util.nums.long
 import com.acelta.util.nums.short
 
-fun PlayerSend.sync(mapChanging: Boolean, teleporting: Boolean, updateRequired: Boolean) = with(ses) {
+fun PlayerSend.sync() = with(ses) {
 	val reusables = ByteBufPacketeer.Reusables.get()
 
 	val packet = reusables[0]
 	with(packet) {
-		it.syncMovement(this, mapChanging, teleporting, updateRequired)
+		it.syncMovement(this)
 
 		val updateBlock = reusables[1]
-		it.sync(updateBlock, updateRequired, reusables[2])
+		it.sync(updateBlock, reusables[2])
 
 		bits(8, 0 /* amount of players to update */)
 		if (updateBlock.readable > 0) {
@@ -30,10 +30,9 @@ fun PlayerSend.sync(mapChanging: Boolean, teleporting: Boolean, updateRequired: 
 	packet.clear()
 }
 
-private fun Player.syncMovement(data: ByteBufPacketeer, mapChanging: Boolean,
-                                teleporting: Boolean, updateRequired: Boolean) {
-	data.bitAccess().bit(updateRequired || mapChanging || teleporting)
-	if (mapChanging || teleporting) {
+private fun Player.syncMovement(data: ByteBufPacketeer) {
+	data.bitAccess().bit(updateRequired || regionChanging || teleporting)
+	if (regionChanging || teleporting) {
 		data.bits(2, 3 /* 3 = region change */)
 				.bits(2, position.z)
 				.bit(teleporting)
@@ -42,7 +41,7 @@ private fun Player.syncMovement(data: ByteBufPacketeer, mapChanging: Boolean,
 	} else if (updateRequired) data.bits(2, 0 /* 0 = no movement, 1 = walk, 2 = run */)
 }
 
-private fun Player.sync(data: ByteBufPacketeer, updateRequired: Boolean, appearanceBlock: ByteBufPacketeer) {
+private fun Player.sync(data: ByteBufPacketeer, appearanceBlock: ByteBufPacketeer) {
 	if (!updateRequired) return
 
 	var mask = 0

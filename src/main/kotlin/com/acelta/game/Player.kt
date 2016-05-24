@@ -10,18 +10,15 @@ class Player(id: Int, position: Position, val session: Session, val details: Pla
 
 	val send = PlayerSend(this)
 
-	var mapRegionChanging = false
+	var regionChanging = false
 	var teleporting = false
 	var updateRequired = false
 
 	override fun tick() {
-		if (mapRegionChanging) {
-			send.mapRegion()
-			session.flush()
-		}
-		send.sync(mapRegionChanging, teleporting, updateRequired)
+		if (regionChanging) send.mapRegion()
+		send.sync()
 
-		mapRegionChanging = false
+		regionChanging = false
 		teleporting = false
 		updateRequired = false
 
