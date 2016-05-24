@@ -50,12 +50,12 @@ private fun Player.sync(data: ByteBufPacketeer, updateRequired: Boolean, appeara
 	mask = mask or 0x10
 	if (mask >= 0x100) {
 		mask = mask or 0x40
-		data + (mask and 0xFF).byte + (mask shr 8).byte
+		data + mask.byte + (mask shr 8).byte
 	} else data + mask.byte
 
 	syncAppearance(appearanceBlock)
 
-	data.buf.writeByte(-(appearanceBlock.readable and 0xFF))
+	data.buf.writeByte(-appearanceBlock.readable)
 	data.buf.writeBytes(appearanceBlock.buf)
 	appearanceBlock.clear()
 }
