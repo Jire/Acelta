@@ -23,7 +23,7 @@ class Session(val channel: Channel, override var read: ByteBufPacketeer = ByteBu
 	@Volatile lateinit var player: Player
 
 	private val flushTask = Runnable {
-		with(write.data) {
+		with(write.buf) {
 			channel.writeAndFlush(retain(), channel.voidPromise())
 			clear()
 		}

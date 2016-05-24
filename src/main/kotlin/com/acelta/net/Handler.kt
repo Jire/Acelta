@@ -18,7 +18,7 @@ internal class Handler : ByteToMessageDecoder() {
 	override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>)
 			= with(SESSION_UPDATER.get(this)!!) {
 
-		read.data = buf
+		read.buf = buf
 		val id = byte.usin
 		CONDUCTOR_UPDATER.get(this).receive(id, this)
 	}

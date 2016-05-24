@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBuf
 import io.netty.buffer.PooledByteBufAllocator
 import io.netty.util.concurrent.FastThreadLocal
 
-class ByteBufPacketeer(data: ByteBuf? = null) : Packeteer {
+class ByteBufPacketeer(buf: ByteBuf? = null) : Packeteer {
 
 	companion object {
 		internal val chars = object : FastThreadLocal<CharArray>() {
@@ -22,47 +22,47 @@ class ByteBufPacketeer(data: ByteBuf? = null) : Packeteer {
 		}
 	}
 
-	lateinit var data: ByteBuf
+	lateinit var buf: ByteBuf
 
 	init {
-		if (data != null) this.data = data
+		if (buf != null) this.buf = buf
 	}
 
 	override var readIndex: Int
-		get() = data.readerIndex()
+		get() = buf.readerIndex()
 		set(value) {
-			data.setIndex(value, writeIndex)
+			buf.setIndex(value, writeIndex)
 		}
 
-	override fun get(index: Int) = data.getByte(index)
+	override fun get(index: Int) = buf.getByte(index)
 
 	override fun skip(bytes: Int) {
 		ensureAccessMode(AccessMode.BYTE)
-		data.skipBytes(bytes)
+		buf.skipBytes(bytes)
 	}
 
 	override val readable: Int
-		get() = data.readableBytes()
+		get() = buf.readableBytes()
 
 	override val byte: Byte
 		get() {
 			ensureAccessMode(AccessMode.BYTE)
-			return data.readByte()
+			return buf.readByte()
 		}
 	override val short: Short
 		get() {
 			ensureAccessMode(AccessMode.BYTE)
-			return data.readShort()
+			return buf.readShort()
 		}
 	override val int: Int
 		get() {
 			ensureAccessMode(AccessMode.BYTE)
-			return data.readInt()
+			return buf.readInt()
 		}
 	override val long: Long
 		get() {
 			ensureAccessMode(AccessMode.BYTE)
-			return data.readLong()
+			return buf.readLong()
 		}
 
 	override val string: String
@@ -81,42 +81,42 @@ class ByteBufPacketeer(data: ByteBuf? = null) : Packeteer {
 		}
 
 	override var writeIndex: Int
-		get() = data.writerIndex()
+		get() = buf.writerIndex()
 		set(value) {
-			data.setIndex(readIndex, value)
+			buf.setIndex(readIndex, value)
 		}
 
-	override fun clear() = apply { data.clear() }
+	override fun clear() = apply { buf.clear() }
 
-	override fun ensureWritable(bytes: Int) = apply { data.ensureWritable(bytes) }
+	override fun ensureWritable(bytes: Int) = apply { buf.ensureWritable(bytes) }
 
 	override fun set(index: Int, value: Int) {
-		data.setByte(index, value)
+		buf.setByte(index, value)
 	}
 
 	override fun plus(values: ByteArray) = apply {
 		ensureAccessMode(AccessMode.BYTE)
-		data.writeBytes(values)
+		buf.writeBytes(values)
 	}
 
 	override fun plus(value: Byte) = apply {
 		ensureAccessMode(AccessMode.BYTE)
-		data.writeByte(value.int)
+		buf.writeByte(value.int)
 	}
 
 	override fun plus(value: Short) = apply {
 		ensureAccessMode(AccessMode.BYTE)
-		data.writeShort(value.int)
+		buf.writeShort(value.int)
 	}
 
 	override fun plus(value: Int) = apply {
 		ensureAccessMode(AccessMode.BYTE)
-		data.writeInt(value)
+		buf.writeInt(value)
 	}
 
 	override fun plus(value: Long) = apply {
 		ensureAccessMode(AccessMode.BYTE)
-		data.writeLong(value)
+		buf.writeLong(value)
 	}
 
 	override var accessMode = AccessMode.BYTE

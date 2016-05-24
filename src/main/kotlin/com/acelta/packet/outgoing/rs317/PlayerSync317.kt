@@ -21,13 +21,13 @@ fun PlayerSend.sync(mapChanging: Boolean, teleporting: Boolean, updateRequired: 
 		bits(8, 0 /* amount of players to update */)
 		if (updateBlock.readable > 0) {
 			bits(11, 2047).byteAccess()
-			data.writeBytes(updateBlock.data)
+			buf.writeBytes(updateBlock.buf)
 		} else byteAccess()
 		updateBlock.clear()
 	}
 
 	this + 81.byte + packet.readable.short
-	write.data.writeBytes(packet.data)
+	write.buf.writeBytes(packet.buf)
 	packet.clear()
 }
 
@@ -55,8 +55,8 @@ private fun Player.sync(data: ByteBufPacketeer, updateRequired: Boolean, appeara
 
 	syncAppearance(appearanceBlock)
 
-	data.data.writeByte(-(appearanceBlock.readable and 0xFF))
-	data.data.writeBytes(appearanceBlock.data)
+	data.buf.writeByte(-(appearanceBlock.readable and 0xFF))
+	data.buf.writeBytes(appearanceBlock.buf)
 	appearanceBlock.clear()
 }
 
