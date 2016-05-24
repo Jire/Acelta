@@ -9,14 +9,14 @@ import com.acelta.util.nums.long
 import com.acelta.util.nums.short
 
 fun PlayerSend.sync(mapChanging: Boolean, teleporting: Boolean, updateRequired: Boolean) = with(ses) {
-	val packeteers = ByteBufPacketeer.Reusables.get()
+	val reusables = ByteBufPacketeer.Reusables.get()
 
-	val packet = packeteers[0]
+	val packet = reusables[0]
 	with(packet) {
 		it.syncMovement(this, mapChanging, teleporting, updateRequired)
 
-		val updateBlock = packeteers[1]
-		it.sync(updateBlock, updateRequired, packeteers[2])
+		val updateBlock = reusables[1]
+		it.sync(updateBlock, updateRequired, reusables[2])
 
 		bits(8, 0 /* amount of players to update */)
 		if (updateBlock.readable > 0) {
