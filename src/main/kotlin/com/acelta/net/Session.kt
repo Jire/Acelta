@@ -32,8 +32,6 @@ class Session(val channel: Channel, override var read: ByteBufPacketeer = ByteBu
 	fun flush() = channel.eventLoop().execute(flushTask)
 
 	fun disconnect() {
-		write.data.release()
-
 		channel.close()
 	}
 
