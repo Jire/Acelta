@@ -63,6 +63,8 @@ interface Packeteer {
 
 	operator fun plus(values: ByteArray): Packeteer
 
+	operator fun plus(value: Packeteer): Packeteer
+
 	operator fun plus(value: Byte): Packeteer
 	operator fun plus(value: Short): Packeteer
 	operator fun plus(value: Int): Packeteer

@@ -99,6 +99,12 @@ class ByteBufPacketeer(buf: ByteBuf? = null) : Packeteer {
 		buf.writeBytes(values)
 	}
 
+	override fun plus(value: Packeteer) = apply {
+		ensureAccessMode(AccessMode.BYTE)
+		if (value is ByteBufPacketeer) buf.writeBytes(value.buf)
+		else throw IllegalArgumentException("`ByteBufPacketeer` can only write other `ByteBufPacketeer`s")
+	}
+
 	override fun plus(value: Byte) = apply {
 		ensureAccessMode(AccessMode.BYTE)
 		buf.writeByte(value.int)

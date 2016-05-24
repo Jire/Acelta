@@ -5,6 +5,7 @@ import com.acelta.packet.ByteBufPacketeer
 import com.acelta.packet.Packeteer
 import com.acelta.packet.outgoing.PlayerSend
 import com.acelta.util.nums.byte
+import com.acelta.util.nums.c
 import com.acelta.util.nums.long
 import com.acelta.util.nums.short
 
@@ -20,14 +21,12 @@ fun PlayerSend.sync(mapChanging: Boolean, teleporting: Boolean, updateRequired: 
 
 		bits(8, 0 /* amount of players to update */)
 		if (updateBlock.readable > 0) {
-			bits(11, 2047).byteAccess()
-			buf.writeBytes(updateBlock.buf)
+			bits(11, 2047).byteAccess() + updateBlock
 		} else byteAccess()
 		updateBlock.clear()
 	}
 
-	this + 81.byte + packet.readable.short
-	write.buf.writeBytes(packet.buf)
+	this + 81.byte + packet.readable.short + packet
 	packet.clear()
 }
 
@@ -55,8 +54,7 @@ private fun Player.sync(data: ByteBufPacketeer, updateRequired: Boolean, appeara
 
 	syncAppearance(appearanceBlock)
 
-	data.buf.writeByte(-appearanceBlock.readable)
-	data.buf.writeBytes(appearanceBlock.buf)
+	data + appearanceBlock.readable.byte.c + appearanceBlock
 	appearanceBlock.clear()
 }
 

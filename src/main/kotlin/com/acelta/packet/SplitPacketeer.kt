@@ -46,6 +46,8 @@ open class SplitPacketeer<T : Packeteer> : Packeteer {
 
 	override fun plus(values: ByteArray) = write + values
 
+	override fun plus(value: Packeteer) = write + value
+
 	override fun plus(value: Byte) = write + value
 	override fun plus(value: Short) = write + value
 	override fun plus(value: Int) = write + value
