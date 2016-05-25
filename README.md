@@ -35,3 +35,17 @@ and remarks about the way of design, and consultancy during the development proc
 
 **Graham Edgecombe** - for his previous work on frameworks like Hyperion, Apollo, and ScapeEmulator which significantly
 impacted and redefined the ways RuneScape emulators are written.
+
+---
+
+### Media
+
+![](http://i.imgur.com/ucWA5UC.png)
+
+---
+
+### Sponsors
+
+We use YourKit Java Profiler to ensure we're getting the performance we expect.
+
+[![YourKit](https://www.yourkit.com/images/yklogo.png)](https://www.yourkit.com/java/profiler/index.jsp)
