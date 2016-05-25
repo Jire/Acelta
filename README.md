@@ -46,6 +46,11 @@ impacted and redefined the ways RuneScape emulators are written.
 
 ### Sponsors
 
+[![YourKit](https://www.yourkit.com/images/yklogo.png)](https://www.yourkit.com/java/profiler/index.jsp)
+
 We use YourKit Java Profiler to ensure we're getting the performance we expect.
 
-[![YourKit](https://www.yourkit.com/images/yklogo.png)](https://www.yourkit.com/java/profiler/index.jsp)
+[![Netty](http://i.imgur.com/73YTNlm.png)](http://netty.io/)
+
+Netty provides us with the high-performance networking and concurrent libraries used to achieve our performance.
+We worked with the Netty team to optimize and improve our throughput.
