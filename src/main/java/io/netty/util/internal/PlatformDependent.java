@@ -597,8 +597,13 @@ public final class PlatformDependent {
 	 * consumer (one thread!).
 	 */
 	public static <T> Queue<T> newMpscQueue() {
-		// Patch to prevent MPSC node allocations
-		return hasUnsafe() ? new MpscChunkedArrayQueue<T>(1024, 1024 * 1024, true) : new MpscLinkedAtomicQueue<T>();
+		// Patched to prevent MPSC node allocations
+
+		if (hasUnsafe()) {
+			return new MpscChunkedArrayQueue<T>(1024, 1024 * 1024, true);
+		} else {
+			return new MpscLinkedAtomicQueue<T>();
+		}
 	}
 
 	/**
@@ -608,8 +613,9 @@ public final class PlatformDependent {
 	public static <T> Queue<T> newSpscQueue() {
 		if (hasUnsafe()) {
 			return new SpscLinkedQueue<T>();
+		} else {
+			return new SpscLinkedAtomicQueue<T>();
 		}
-		return new SpscLinkedAtomicQueue<T>();
 	}
 
 	/**
