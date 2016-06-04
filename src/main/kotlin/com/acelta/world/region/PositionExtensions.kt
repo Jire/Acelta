@@ -3,9 +3,9 @@ package com.acelta.world.region
 import com.acelta.world.Position
 
 val Position.centerX: Int
-	get() = x shr 3
+	get() = x / 8
 val Position.centerY: Int
-	get() = y shr 3
+	get() = y / 8
 
 val Position.regionX: Int
 	get() = centerX - 6
