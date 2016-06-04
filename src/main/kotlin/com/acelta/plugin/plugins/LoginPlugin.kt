@@ -1,56 +1,38 @@
 package com.acelta.plugin.plugins
 
-import com.acelta.game.Player
-import com.acelta.game.PlayerDetails
-import com.acelta.game.world.Position
-import com.acelta.net.Session.Companion.CONDUCTOR_UPDATER
-import com.acelta.packet.PacketConductor
-import com.acelta.packet.PacketConductor.Game
-import com.acelta.packet.incoming.rs317.guest.Login
-import com.acelta.packet.outgoing.rs317.*
+import com.acelta.packet.incoming.PlayerPacketConductor
+import com.acelta.world.mob.player.Player
+import com.acelta.world.mob.player.PlayerDetails
+import com.acelta.world.Position
+import com.acelta.packet.incoming.session.Login
 import com.acelta.plugin.Plugin
-import com.acelta.task.Tasks.repeating
+import com.acelta.task.repeating
 import com.acelta.task.unaryPlus
 
 object LoginPlugin : Plugin({
-	PacketConductor.Guest[18] = Login // reconnecting
+	Login { uid, user, pass ->
+		send.loginResponse(2)
+		flush()
 
-	Login { ver, rel, hd, uid, user, pass ->
+		conductor = PlayerPacketConductor
+
 		val index = 1
+		val position = Position()
+		val details = PlayerDetails(uid, user)
 
-		with(send) {
-			loginResponse(2, 2, false)
-			playerDetails(true, index)
-		}
+		player = Player(index, position, this, details)
 
-		player = Player(index, Position(), this, PlayerDetails(uid, user))
-		player.regionChanging = true
+		player.movement.regionChanging = true
 		player.updateRequired = true
-		CONDUCTOR_UPDATER.set(this, Game)
+
+		with(player.send) {
+			index()
+			msg("Welcome to Acelta.")
+		}
 
 		+repeating {
 			player.tick()
 			!player.session.channel.isOpen
-		}
-
-		with(player.send) {
-			for (i in 0..20) setSkill(i, 1, 1)
-
-			setInterface(0, 2423)
-			setInterface(1, 3917)
-			setInterface(2, 638)
-			setInterface(3, 3213)
-			setInterface(4, 1644)
-			setInterface(5, 5608)
-			setInterface(6, 1151)
-			setInterface(8, 5065)
-			setInterface(9, 5715)
-			setInterface(10, 2449)
-			setInterface(11, 4445)
-			setInterface(12, 147)
-			setInterface(13, 2699)
-
-			msg("Welcome to Acelta.")
 		}
 
 		println("LOGIN (user: $user, pass: $pass)")

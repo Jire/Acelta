@@ -11,15 +11,22 @@ import io.netty.util.concurrent.FastThreadLocal
 class ByteBufPacketeer(buf: ByteBuf? = null) : Packeteer {
 
 	companion object {
-		internal val chars = object : FastThreadLocal<CharArray>() {
-			override fun initialValue() = CharArray(256)
-		}
-	}
 
-	object Reusables : FastThreadLocal<Array<ByteBufPacketeer>>() {
-		override fun initialValue(): Array<ByteBufPacketeer> {
-			return Array(8) { ByteBufPacketeer(PooledByteBufAllocator.DEFAULT.directBuffer()) }
+		private val chars = CharArray(256)
+
+		/* visible for inline */ var reusablesCount = 0
+		/* visible for inline */ val reusables = Array(2048) {
+			ByteBufPacketeer(PooledByteBufAllocator.DEFAULT.directBuffer())
 		}
+
+		inline fun reusable(crossinline body: ByteBufPacketeer.() -> Any) {
+			if (++reusablesCount >= reusables.size) reusablesCount = 0
+			with(reusables[reusablesCount]) {
+				clear()
+				body()
+			}
+		}
+
 	}
 
 	lateinit var buf: ByteBuf
@@ -69,15 +76,13 @@ class ByteBufPacketeer(buf: ByteBuf? = null) : Packeteer {
 		get() {
 			ensureAccessMode(AccessMode.BYTE)
 
-			val tChars = chars.get()
-
 			var index = 0
 			while (readable > 0) {
 				val char = byte.usin.toChar()
 				if ('\n' == char) break
-				tChars[index++] = char
+				chars[index++] = char
 			}
-			return StringCache[tChars, index]
+			return StringCache[chars, index]
 		}
 
 	override var writeIndex: Int

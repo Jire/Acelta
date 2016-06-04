@@ -4,8 +4,8 @@ import com.acelta.packet.Packeteer.AccessMode
 
 open class SplitPacketeer<T : Packeteer> : Packeteer {
 
-	@Volatile open lateinit var read: T
-	@Volatile open lateinit var write: T
+	open lateinit var read: T
+	open lateinit var write: T
 
 	override var readIndex: Int
 		get() = read.readIndex
@@ -66,10 +66,10 @@ open class SplitPacketeer<T : Packeteer> : Packeteer {
 
 	override fun bitAccess() = write.bitAccess()
 
-	override fun byteAccess() = write.byteAccess()
+	override fun finishBitAccess() = write.finishBitAccess()
 
 	override fun ensureAccessMode(accessMode: AccessMode) = write.ensureAccessMode(accessMode)
 
-	override fun bits(bits: Int, value: Int) = write.bits(bits, value)
+	override fun bits(numBits: Int, value: Int) = write.bits(numBits, value)
 
 }
