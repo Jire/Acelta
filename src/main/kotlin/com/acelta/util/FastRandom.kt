@@ -2,7 +2,7 @@ package com.acelta.util
 
 import java.security.SecureRandom
 
-object Random {
+object FastRandom {
 
 	private var x = SecureRandom().nextLong()
 
