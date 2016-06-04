@@ -9,7 +9,7 @@ interface Packeteer {
 	enum class AccessMode { BYTE, BIT }
 
 	companion object {
-		private val BIT_MASKS = arrayOf(
+		private val bitMasks = arrayOf(
 				0, 0x1, 0x3, 0x7,
 				0xf, 0x1f, 0x3f, 0x7f,
 				0xff, 0x1ff, 0x3ff, 0x7ff,
@@ -114,20 +114,20 @@ interface Packeteer {
 
 		while (numBits > bitOffset) {
 			var tmp = get(bytePos).toInt()
-			tmp = tmp and BIT_MASKS[bitOffset].inv()
-			tmp = tmp or (value shr numBits - bitOffset and BIT_MASKS[bitOffset])
+			tmp = tmp and bitMasks[bitOffset].inv()
+			tmp = tmp or (value shr numBits - bitOffset and bitMasks[bitOffset])
 			set(bytePos++, tmp)
 			numBits -= bitOffset
 			bitOffset = 8
 		}
 		var tmp = get(bytePos).toInt()
 		if (numBits == bitOffset) {
-			tmp = tmp and BIT_MASKS[bitOffset].inv()
-			tmp = tmp or (value and BIT_MASKS[bitOffset])
+			tmp = tmp and bitMasks[bitOffset].inv()
+			tmp = tmp or (value and bitMasks[bitOffset])
 			set(bytePos, tmp)
 		} else {
-			tmp = tmp and (BIT_MASKS[numBits] shl bitOffset - numBits).inv()
-			tmp = tmp or (value and BIT_MASKS[numBits] shl bitOffset - numBits)
+			tmp = tmp and (bitMasks[numBits] shl bitOffset - numBits).inv()
+			tmp = tmp or (value and bitMasks[numBits] shl bitOffset - numBits)
 			set(bytePos, tmp)
 		}
 	}
