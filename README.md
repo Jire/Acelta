@@ -27,11 +27,13 @@ Using a single game thread allows you to use simplistic, overhead-free technique
 
 ### Credits
 
-**Sino**, **thing1**, **Dane**, **Colby**, **Jonatino**, **Wizard Jesse**, **Flammable**, and **Velocity** - for chat, banter,
-and remarks about the way of design, and consultancy during the development process.
+**Sino**, [**thing1**](https://github.com/RyanDennis03), [**Dane**](https://github.com/thedaneeffect/), **Colby**,
+[**Jonatino**](https://github.com/Jonatino), **Wizard Jesse**, **Flammable**,
+and [**Velocity**](https://github.com/Velocity-) - for chat, banter, and remarks about the way of design,
+and consultancy during the development process.
 
-**Graham Edgecombe** - for his previous work on frameworks like Hyperion, Apollo, and ScapeEmulator which significantly
-impacted and redefined the ways RuneScape emulators are written.
+[**Graham Edgecombe**](https://github.com/grahamedgecombe/) - for his previous work on frameworks like Hyperion, Apollo,
+ and ScapeEmulator which significantly impacted and redefined the ways RuneScape emulators are written.
 
 ---
 
