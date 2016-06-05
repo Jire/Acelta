@@ -8,7 +8,7 @@ object Movement : IncomingPacket(147) {
 
 	override fun Session.receive(id: Int) {
 		val size = byte.usin
-		val steps = (size - 2) / 2
+		val steps = (size - 4) / 2
 
 		val baseX = short.usin
 		val baseY = short.usin
