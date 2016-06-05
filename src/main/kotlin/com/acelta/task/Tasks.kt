@@ -26,7 +26,7 @@ object Tasks {
 		val it = tasks.iterator()
 		while (it.hasNext()) {
 			val next = it.next()
-			if (next != null && next.finish()) it.remove()
+			if (next.finish()) it.remove()
 		}
 	}
 

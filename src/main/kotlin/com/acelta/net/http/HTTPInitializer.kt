@@ -11,7 +11,7 @@ internal object HTTPInitializer : ChannelInitializer<SocketChannel>() {
 	override fun initChannel(ch: SocketChannel) {
 		ch.pipeline()
 				.addLast(HttpServerCodec(256, 512, 512, false, 64))
-				.addLast(HTTPHandler())
+				.addLast(HTTPHandler)
 	}
 
 }

@@ -16,6 +16,10 @@ import io.netty.channel.socket.nio.NioServerSocketChannel
 const val THREADS = 1
 const val CYCLE_MS = 600L
 
+const val DATA_PATH = "data/"
+
+const val CACHE_PATH = "${DATA_PATH}cache/"
+
 val epoll = Epoll.isAvailable()
 val group = if (epoll) EpollEventLoopGroup(THREADS) else NioEventLoopGroup(THREADS)
 val channelType = (if (epoll) EpollServerSocketChannel::class.java
