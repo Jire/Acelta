@@ -10,13 +10,13 @@ object Movement : IncomingPacket(147) {
 		val size = byte.usin
 		if (readable < size) return
 
-		val steps = (size - 4) / 2
+		val steps = (size - 2) / 2
 
 		val baseX = short.usin
 		val baseY = short.usin
 
 		addFirstStep(baseX, baseY)
-		repeat(steps) {
+		for (i in 1..steps - 1) {
 			val xOffset = byte.usin
 			val yOffset = byte.usin
 			addStep(baseX + xOffset, baseY + yOffset)
