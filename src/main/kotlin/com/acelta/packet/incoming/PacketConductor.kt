@@ -5,17 +5,17 @@ import org.reflections.Reflections
 
 abstract class PacketConductor(`package`: String, packetCapacity: Int = 256) {
 
-	private val incoming = arrayOfNulls<ListenableIncomingPacket<*>>(packetCapacity)
+	private val incoming = arrayOfNulls<IncomingPacket>(packetCapacity)
 
 	init {
-		val ref = Reflections("${javaClass.`package`.name}.$`package`")
-		for (packet in ref.getSubTypesOf(ListenableIncomingPacket::class.java)) {
-			val obj = packet.kotlin.objectInstance!!
+		Reflections("${javaClass.`package`.name}.$`package`")
+				.getSubTypesOf(IncomingPacket::class.java).forEach {
+			val obj = it.kotlin.objectInstance!!
 			for (id in obj.ids) this[id] = obj
 		}
 	}
 
-	operator fun set(id: Int, packet: ListenableIncomingPacket<*>) {
+	operator fun set(id: Int, packet: IncomingPacket) {
 		incoming[id] = packet
 	}
 

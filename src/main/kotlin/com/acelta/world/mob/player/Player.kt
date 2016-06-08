@@ -5,12 +5,15 @@ import com.acelta.world.Position
 import com.acelta.net.game.Session
 import com.acelta.packet.outgoing.player.PlayerSend
 import com.acelta.packet.outgoing.player.sync
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
-class Player(id: Int, position: Position, val session: Session, val details: PlayerDetails) : Mob(id, position) {
+class Player(id: Int, position: Position, val session: Session, val username: String) : Mob(id, position) {
 
 	val send = PlayerSend(this)
 
-	var updateRequired = true
+	var updateRequired = false
+
+	val screen = ObjectArrayList<Player>(255)
 
 	override fun tick() {
 		movement.tick()

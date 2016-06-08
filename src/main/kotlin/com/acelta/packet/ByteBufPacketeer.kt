@@ -27,6 +27,13 @@ class ByteBufPacketeer(buf: ByteBuf? = null) : Packeteer {
 			}
 		}
 
+		inline fun reusable(out: Packeteer, crossinline body: ByteBufPacketeer.() -> Any) {
+			reusable {
+				body()
+				out + this
+			}
+		}
+
 	}
 
 	lateinit var buf: ByteBuf

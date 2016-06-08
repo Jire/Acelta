@@ -23,10 +23,10 @@ object Tasks {
 	fun execute(runnable: Runnable) = group.execute(runnable)
 
 	fun tick() {
-		val it = tasks.iterator()
-		while (it.hasNext()) {
-			val next = it.next()
-			if (next.finish()) it.remove()
+		val iterator = tasks.iterator()
+		while (iterator.hasNext()) {
+			val next = iterator.next()
+			if (next.finish()) iterator.remove()
 		}
 	}
 

@@ -16,9 +16,9 @@ object Movement : IncomingPacket(147) {
 		val baseY = short.usin
 
 		addFirstStep(baseX, baseY)
-		for (i in 1..steps - 1) {
-			val xOffset = byte.usin
-			val yOffset = byte.usin
+		repeat(steps - 1) {
+			val xOffset = byte
+			val yOffset = byte
 			addStep(baseX + xOffset, baseY + yOffset)
 		}
 	}

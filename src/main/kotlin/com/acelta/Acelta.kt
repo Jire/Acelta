@@ -4,7 +4,6 @@ package com.acelta
 
 import com.acelta.net.game.GameServer
 import com.acelta.net.http.HTTPServer
-import com.acelta.plugin.PluginManager
 import com.acelta.task.Tasks
 import io.netty.channel.ServerChannel
 import io.netty.channel.epoll.Epoll
@@ -31,10 +30,6 @@ fun main(vararg args: String) {
 	println("done.")
 	print("Binding game server... ")
 	GameServer.bind()
-	println("done.")
-
-	print("Loading plugins... ")
-	PluginManager.loadPlugins()
 	println("done.")
 
 	print("Scheduling tasks... ")

@@ -6,23 +6,21 @@ import com.acelta.packet.outgoing.varByte
 import com.acelta.packet.outgoing.varShort
 import com.acelta.util.nums.byte
 import com.acelta.util.nums.short
-import com.acelta.world.region.centerX
-import com.acelta.world.region.centerY
 
 class PlayerSend(val player: Player, val session: Session = player.session) {
 
-	fun index() = session + 27.byte + player.id.short
+	fun index() = session + 27.byte + player.index.short
 
 	fun sector() = varShort(session, 232) {
-		val centerX = player.position.centerX
-		val centerY = player.position.centerY
+		val chunkX = player.position.chunkX
+		val chunkY = player.position.chunkY
 
-		this + centerX.short + centerY.short
+		this + chunkX.short + chunkY.short
 
-		var x = (centerX - 6) / 8
-		while (x <= (centerX + 6) / 8) {
-			var y = (centerY - 6) / 8
-			while (y <= (centerY + 6) / 8) {
+		var x = (chunkX - 6) / 8
+		while (x <= (chunkX + 6) / 8) {
+			var y = (chunkY - 6) / 8
+			while (y <= (chunkY + 6) / 8) {
 				this + x.byte + y.byte + 1 /* land CRC */ + 1 /* loc CRC */
 				y++
 			}
@@ -39,5 +37,13 @@ class PlayerSend(val player: Player, val session: Session = player.session) {
 		val ticks = totalSeconds * (1 / .6)
 		session + 53.byte + ticks.toShort()
 	}
+
+	fun skill(skillID: Int, experience: Int, level: Int) = session + 98.byte + skillID.byte + experience + level.byte
+
+	fun multizone(inMultizone: Boolean) = session + 217.byte + inMultizone.byte
+
+	fun nullAnims() = session + 5.byte
+
+	fun resetChat() = session + 75.byte
 
 }

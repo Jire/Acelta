@@ -27,9 +27,8 @@ Using a single game thread allows you to use simplistic, overhead-free technique
 
 ### Credits
 
-**Sino**, [**thing1**](https://github.com/RyanDennis03), [**Dane**](https://github.com/thedaneeffect/), **Colby**,
-[**Jonatino**](https://github.com/Jonatino), **Wizard Jesse**, **Flammable**,
-and [**Velocity**](https://github.com/Velocity-) - for chat, banter, and remarks about the way of design,
+[**Dane**](https://github.com/thedaneeffect/), **Flamable**, **Sino**, [**thing1**](https://github.com/RyanDennis03),
+[**Wizard Jesse**](https://github.com/WizardJesse1), and **Colby** - for chat, banter, and remarks about the way of design,
 and consultancy during the development process.
 
 [**Graham Edgecombe**](https://github.com/grahamedgecombe/) - for his previous work on frameworks like Hyperion, Apollo,
@@ -39,11 +38,11 @@ and consultancy during the development process.
 
 ### Media
 
-![](http://i.imgur.com/ucWA5UC.png)
+![](http://i.imgur.com/H1u9os0.png)
 
 ---
 
-### Sponsors
+### Sponsored
 
 [![YourKit](https://www.yourkit.com/images/yklogo.png)](https://www.yourkit.com/java/profiler/index.jsp)
 
