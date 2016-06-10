@@ -25,9 +25,9 @@ object World {
 
 		players[index] = player
 
-		if (!reconnecting) with(player.send) {
+		with(player.send) {
 			index()
-			msg("Welcome to Acelta.")
+			if (!reconnecting) msg("Welcome to Acelta.")
 		}
 
 		+repeating {
