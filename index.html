@@ -36,47 +36,45 @@
 <p>Acelta receives packets in a straightforward, no-overhead dispatch system for which it is trivial to both listen and
 define incoming packets.</p>
 
-<p>A zero-garbage, lock-free inter-thread messaging queue is used to link Netty's networking
-threads with the game thread. <code>PacketConductor</code> eliminates the necessity for individual pipeline handlers for different
-game states.</p>
+<p><code>PacketConductor</code> eliminates the necessity for individual pipeline handlers for different game states.</p>
 
 <h4>
 <a id="zero-garbage-packet-sending" class="anchor" href="#zero-garbage-packet-sending" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Zero-garbage packet sending</h4>
 
-<p>Acelta uses simplistic extension-function definitions to define outgoing packets. This system works in concert with
+<p>Acelta uses simplistic function definitions to define outgoing packets. This system works in concert with
 the "one buffer per session" approach to minimize write overhead.</p>
 
 <p>Because of this approach, no Netty encoder is needed. Packet queueing is completely avoided for both incoming and
 outgoing packets in favor of spare flushing.</p>
 
 <h4>
-<a id="single-game-thread" class="anchor" href="#single-game-thread" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Single game thread</h4>
+<a id="single-thread-for-the-whole-server" class="anchor" href="#single-thread-for-the-whole-server" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Single thread for the whole server</h4>
 
-<p>Using a single game thread allows you to use simplistic, overhead-free techniques and libraries for game logic
-if you so desire.</p>
+<p>Using a single game thread allows you to use simplistic, overhead-free techniques and libraries.</p>
 
 <hr>
 
 <h3>
 <a id="credits" class="anchor" href="#credits" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Credits</h3>
 
-<p><strong>Sino</strong>, <strong>thing1</strong>, <strong>Colby</strong>, <strong>Jonatino</strong>, <strong>Wizard Jesse</strong>, <strong>Flammable</strong>, and <strong>Velocity</strong> - for chat, banter,
-and remarks about the way of design, and consultancy during the development process.</p>
+<p><a href="https://github.com/thedaneeffect/"><strong>Dane</strong></a>, <strong>Flamable</strong>, <strong>Sino</strong>, <a href="https://github.com/RyanDennis03"><strong>thing1</strong></a>,
+<a href="https://github.com/WizardJesse1"><strong>Wizard Jesse</strong></a>, and <strong>Colby</strong> - for chat, banter, and remarks about the way of design,
+and consultancy during the development process.</p>
 
-<p><strong>Graham Edgecombe</strong> - for his previous work on frameworks like Hyperion, Apollo, and ScapeEmulator which significantly
-impacted and redefined the ways RuneScape emulators are written.</p>
+<p><a href="https://github.com/grahamedgecombe/"><strong>Graham Edgecombe</strong></a> - for his previous work on frameworks like Hyperion, Apollo,
+ and ScapeEmulator which significantly impacted and redefined the ways RuneScape emulators are written.</p>
 
 <hr>
 
 <h3>
 <a id="media" class="anchor" href="#media" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Media</h3>
 
-<p><img src="http://i.imgur.com/ucWA5UC.png" alt=""></p>
+<p><img src="http://i.imgur.com/H1u9os0.png" alt=""></p>
 
 <hr>
 
 <h3>
-<a id="sponsors" class="anchor" href="#sponsors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sponsors</h3>
+<a id="sponsored" class="anchor" href="#sponsored" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sponsored</h3>
 
 <p><a href="https://www.yourkit.com/java/profiler/index.jsp"><img src="https://www.yourkit.com/images/yklogo.png" alt="YourKit"></a></p>
 
