@@ -2,7 +2,7 @@ package com.acelta.util
 
 class Indexer<T>(val capacity: Int) : MutableIterable<T> {
 
-	private val array = arrayOfNulls<Any>(capacity)
+	private val array = arrayOfNulls<Any?>(capacity)
 	private val reusableIterator = Iterator()
 
 	var size = 0
@@ -24,11 +24,10 @@ class Indexer<T>(val capacity: Int) : MutableIterable<T> {
 	}
 
 	fun nextIndex(): Int {
-		if (size == 0) return 1
-		else if (size == capacity)
+		if (size == capacity)
 			throw IllegalStateException("There is no next index because the indexer is filled to capacity!")
-		for (i in 0..size - 1) if (null === array[i]) return i
-		throw AssertionError()
+		for (i in 0..array.size - 1) if (null === array[i]) return i
+		throw IllegalStateException("Could not find an open index!")
 	}
 
 	private inner class Iterator : MutableIterator<T> {
