@@ -33,8 +33,17 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.Deque;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
@@ -42,7 +51,10 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static io.netty.util.internal.PlatformDependent0.*;
+import static io.netty.util.internal.PlatformDependent0.HASH_CODE_ASCII_SEED;
+import static io.netty.util.internal.PlatformDependent0.hashCodeAsciiCompute;
+import static io.netty.util.internal.PlatformDependent0.hashCodeAsciiSanitize;
+import static io.netty.util.internal.PlatformDependent0.hashCodeAsciiSanitizeAsByte;
 
 /**
  * Utility that detects various properties specific to the current runtime
@@ -613,9 +625,8 @@ public final class PlatformDependent {
 	public static <T> Queue<T> newSpscQueue() {
 		if (hasUnsafe()) {
 			return new SpscLinkedQueue<T>();
-		} else {
-			return new SpscLinkedAtomicQueue<T>();
 		}
+		return new SpscLinkedAtomicQueue<T>();
 	}
 
 	/**

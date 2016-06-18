@@ -71,7 +71,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.0.Final</version>
+            <version>4.1.1.Final</version>
         </dependency>
         <dependency>
             <groupId>it.unimi.dsi</groupId>
@@ -91,7 +91,7 @@
     </dependencies>
 
     <properties>
-        <kotlin.version>1.0.2</kotlin.version>
+        <kotlin.version>1.0.2-1</kotlin.version>
     </properties>
 
 </project>
