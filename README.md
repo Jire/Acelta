@@ -3,7 +3,7 @@
 [![license](https://img.shields.io/badge/license-GPL%203.0-yellowgreen.svg)](https://github.com/Jire/Acelta/blob/master/LICENSE)
 
 # Acelta
-RuneScape emulation rethought; Acelta reimagines with elegant, highly-performant solutions.
+A try at RuneScape server emulation using Kotlin to reimagine with elegant, highly-performant solutions.
 
 ---
 
